@@ -681,13 +681,10 @@ buatChart(data);
 
 
 // =================
-// PEMERIKSAAN TERBARU
+// PEMERIKSAAN TERBARU OWNER FINAL
 // =================
 
-
-
 function tampilkanTerbaru(data){
-
 
 
 const box =
@@ -703,35 +700,77 @@ return;
 
 }
 
-if(data.length===0){
 
-box.innerHTML = `
+
+let html = "";
+
+
+
+if(data.length === 0){
+
+
+html = `
+
+<div class="detail-card">
+
+<h3>
+📋 Belum Ada Pemeriksaan
+</h3>
 
 <p>
-Belum ada pemeriksaan terbaru.
+Belum ada data pemeriksaan makanan.
 </p>
+
+</div>
 
 `;
 
-return;
+
 
 }
-
-
-let html="";
-
-
+else{
 
 
 data
-.slice(0,5)
+.slice(0,4)
 .forEach(item=>{
+
+
+const statusClass =
+
+item.hasil === "LAYAK"
+
+?
+
+"layak"
+
+:
+
+"tidak";
+
+
+
+const statusText =
+
+item.hasil === "LAYAK"
+
+?
+
+"🟢 LAYAK"
+
+:
+
+"🔴 TIDAK LAYAK";
+
+
+
 
 
 html += `
 
 
 <div class="detail-card">
+
 
 
 <h3>
@@ -746,11 +785,15 @@ html += `
 Pemilik
 </span>
 
+
 <b>
 ${item.nama || "-"}
 </b>
 
+
 </div>
+
+
 
 
 
@@ -760,11 +803,14 @@ ${item.nama || "-"}
 Kategori
 </span>
 
+
 <b>
 ${item.kategori || "-"}
 </b>
 
+
 </div>
+
 
 
 
@@ -772,18 +818,37 @@ ${item.kategori || "-"}
 <div class="detail-row">
 
 <span>
-Hasil Pemeriksaan
+Kemasan
 </span>
 
 
-<b class="status ${item.hasil==="LAYAK"?"layak":"tidak"}">
+<b>
+${item.kemasan || "-"}
+</b>
 
-${item.hasil==="LAYAK" ? "🟢 LAYAK" : "🔴 TIDAK LAYAK"}
+
+</div>
+
+
+
+
+
+<div class="detail-row">
+
+<span>
+Status
+</span>
+
+
+<b class="status ${statusClass}">
+
+${statusText}
 
 </b>
 
 
 </div>
+
 
 
 
@@ -805,6 +870,7 @@ ${item.catatan || "-"}
 
 
 
+
 <div class="detail-row">
 
 <span>
@@ -818,6 +884,7 @@ ${formatTanggal(item.created_at)}
 
 
 </div>
+
 
 
 
@@ -838,12 +905,14 @@ onclick="lihatDetail(${item.id})"
 </div>
 
 
-`;
 
+`;
 
 
 });
 
+
+}
 
 
 
@@ -851,11 +920,14 @@ box.innerHTML =
 html;
 
 
-
 }
 
+
+
+
+
 // =================
-// MONITORING KEAMANAN PANGAN
+// MONITORING KEAMANAN PANGAN FINAL
 // =================
 
 
@@ -878,7 +950,8 @@ return;
 
 
 
-const dataTidakLayak =
+
+const masalah =
 
 data.filter(
 
@@ -892,36 +965,37 @@ item.hasil === "TIDAK LAYAK"
 
 
 
-let html = "";
+let html="";
 
 
 
 
 
-if(dataTidakLayak.length===0){
+if(masalah.length===0){
 
 
 html = `
 
+<div class="detail-card">
+
+<h3>
+✅ Kondisi Aman
+</h3>
+
+
 <p>
-
-✅ Semua pemeriksaan dalam kondisi baik.
-
+Semua pemeriksaan makanan dalam kondisi baik.
 </p>
+
+
+</div>
 
 `;
 
 
-
 }
-
 else{
 
-
-
-dataTidakLayak
-.slice(0,5)
-.forEach(item=>{
 
 
 html += `
@@ -931,8 +1005,40 @@ html += `
 
 
 <h3>
-🍜 ${item.nama_makanan || "-"}
+⚠️ ${masalah.length} Makanan Membutuhkan Perhatian
 </h3>
+
+
+<p>
+Berikut makanan dengan hasil pemeriksaan tidak layak.
+</p>
+
+
+</div>
+
+
+`;
+
+
+
+
+
+masalah
+.slice(0,5)
+.forEach(item=>{
+
+
+
+html += `
+
+
+<div class="detail-card">
+
+
+<h3>
+🔴 ${item.nama_makanan || "-"}
+</h3>
+
 
 
 
@@ -956,14 +1062,12 @@ ${item.nama || "-"}
 <div class="detail-row">
 
 <span>
-Hasil
+Kategori
 </span>
 
 
-<b class="status bad">
-
-${item.hasil}
-
+<b>
+${item.kategori || "-"}
 </b>
 
 
@@ -972,17 +1076,16 @@ ${item.hasil}
 
 
 
+
 <div class="detail-row">
 
 <span>
-Catatan
+Masalah
 </span>
 
 
 <b>
-
 ${item.catatan || "-"}
-
 </b>
 
 
@@ -999,9 +1102,7 @@ Tanggal Pemeriksaan
 
 
 <b>
-
 ${formatTanggal(item.created_at)}
-
 </b>
 
 
@@ -1020,6 +1121,7 @@ ${formatTanggal(item.created_at)}
 });
 
 
+
 }
 
 
@@ -1031,6 +1133,9 @@ html;
 
 
 }
+
+
+
 
 
 
