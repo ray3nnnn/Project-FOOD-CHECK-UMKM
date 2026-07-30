@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Pemeriksaan Makanan
+</title>
+
+
+<link rel="stylesheet" href="css/style.css">
+
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+
+<div class="brand">
+
+<h2>
+🛡 Food Check
+</h2>
+
+<p>
+UMKM
+</p>
+
+</div>
+
+
+
+
+<div class="profile">
+
+<div class="avatar">
+A
+</div>
+
+
+<div>
+
+<b id="sidebarNama">
+</b>
+
+<small id="sidebarRole">
+</small>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="menu">
+
+
+<button onclick="location.href='dashboard.html'">
+
+🏠 Dashboard
+
+</button>
+
+
+
+<button class="active">
+
+🍜 Pemeriksaan
+
+</button>
+
+
+
+
+<button onclick="location.href='riwayat.html'">
+
+📋 Riwayat Pemeriksaan
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+<button 
+class="logout"
+onclick="logout()">
+
+🚪 Logout
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+<!-- CONTENT -->
+
+
+<div class="content">
+
+
+
+<h1>
+🍜 Isi Pemeriksaan Makanan
+</h1>
+
+
+
+
+
+<div class="manage">
+
+
+
+<h2>
+Form Pemeriksaan
+</h2>
+
+
+
+<form id="formPemeriksaan">
+
+
+
+<label>
+Nama Makanan
+</label>
+
+
+<input 
+id="nama_makanan"
+required>
+
+
+
+<label>
+Kategori
+</label>
+
+
+<input 
+id="kategori"
+required>
+
+
+
+
+
+<label>
+Kemasan
+</label>
+
+
+<input 
+id="kemasan">
+
+
+
+
+
+<label>
+Warna
+</label>
+
+
+<input 
+id="warna">
+
+
+
+
+
+<label>
+Aroma
+</label>
+
+
+<input 
+id="aroma">
+
+
+
+
+
+<label>
+Tekstur
+</label>
+
+
+<input 
+id="tekstur">
+
+<label>
+Hasil Pemeriksaan
+</label>
+
+
+<select id="hasil">
+
+<option value="LAYAK">
+LAYAK
+</option>
+
+
+<option value="TIDAK LAYAK">
+TIDAK LAYAK
+</option>
+
+
+</select>
+
+
+
+<label>
+Tanggal Produksi
+</label>
+
+
+<input 
+type="date"
+id="tanggal_produksi">
+
+
+
+
+
+<label>
+Tanggal Kadaluarsa
+</label>
+
+
+<input 
+type="date"
+id="tanggal_kadaluarsa">
+
+
+
+
+
+<label>
+Catatan
+</label>
+
+
+<textarea 
+id="catatan"
+required>
+</textarea>
+
+
+
+
+<button 
+type="button"
+onclick="simpanPemeriksaanBaru()">
+
+Simpan Pemeriksaan
+
+</button>
+
+
+
+</form>
+
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+<script src="js/config.js"></script>
+<script src="js/pemeriksaan.js"></script>
+
+
+<script>
+
+
+function logout(){
+
+localStorage.clear();
+
+location.href="index.html";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

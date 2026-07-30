@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Dashboard Food Check UMKM
+</title>
+
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+
+<div class="brand">
+
+<h2>
+🛡 Food Check
+</h2>
+
+<p>
+UMKM
+</p>
+
+</div>
+
+
+
+<div class="profile">
+
+<div class="avatar">
+A
+</div>
+
+
+<div>
+
+<b id="sidebarNama">
+</b>
+
+<small id="sidebarRole">
+</small>
+
+
+</div>
+
+</div>
+
+
+
+
+<div class="menu">
+
+
+<button onclick="location.href='dashboard.html'">
+🏠 Dashboard
+</button>
+
+<button 
+id="btnMenuPemeriksaan"
+onclick="location.href='pemeriksaan.html'">
+
+🍜 Pemeriksaan
+
+</button>
+
+<button onclick="location.href='riwayat.html'">
+
+📋 Riwayat Pemeriksaan
+
+</button>
+
+
+
+</div>
+
+
+
+<button 
+class="logout"
+onclick="logout()">
+
+🚪 Logout
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<!-- CONTENT -->
+
+<div class="content">
+
+
+<h1 id="roleTitle">
+Dashboard
+</h1>
+
+<div class="hero">
+
+<p>
+Selamat Datang,
+</p>
+
+
+<h2 id="welcome">
+Administrator
+</h2>
+
+
+<p>
+Kelola dan pantau hasil pemeriksaan keamanan pangan UMKM Anda.
+</p>
+
+
+<button 
+id="btnIsi"
+onclick="location.href='pemeriksaan.html'">
+
+🍜 Isi Pemeriksaan Makanan
+
+</button>
+
+
+</div>
+
+
+
+
+<div class="cards">
+
+
+<div class="card">
+
+<h2 id="total">
+0
+</h2>
+
+
+<span>
+📋 Total Pemeriksaan
+</span>
+
+</div>
+
+
+
+<div class="card">
+
+<h2 id="layak">
+0
+</h2>
+
+
+<span>
+✅ Makanan Layak
+</span>
+
+</div>
+
+
+
+<div class="card">
+
+<h2 id="tidakLayak">
+0
+</h2>
+
+
+<span>
+⚠️ Tidak Layak
+</span>
+
+</div>
+
+
+</div>
+
+
+<div class="dashboard-grid">
+
+
+<div class="manage" id="chartBox">
+
+<h2>
+📊 Statistik Pemeriksaan
+</h2>
+
+<canvas id="ownerChart"></canvas>
+
+</div>
+
+
+<div class="manage" id="manageBox">
+
+<h2>
+📊 Pemeriksaan Terbaru
+</h2>
+
+
+<p>
+Data pemeriksaan terbaru dari seluruh member.
+</p>
+
+
+<div id="latestData"></div>
+
+
+<br>
+
+
+<button onclick="location.href='riwayat.html'">
+
+📋 Lihat Semua Riwayat
+
+</button>
+
+
+<button onclick="loadOwner()">
+
+🔄 Refresh Data
+
+</button>
+
+
+</div>
+
+
+</div>
+
+<div 
+id="filterOwnerBox"
+class="manage"
+style="display:none;"
+>
+
+
+<h2>
+🔎 Filter Member
+</h2>
+
+
+<select id="filterMember">
+
+<option value="all">
+Semua Member
+</option>
+
+
+</select>
+
+
+</div>
+
+<div class="manage" id="manageBox">
+
+<h2>
+🛡 Monitoring Keamanan Pangan
+</h2>
+
+
+<p>
+Daftar makanan yang membutuhkan perhatian.
+</p>
+
+
+
+<div id="warningData">
+
+</div>
+
+
+
+</div>
+
+</div>
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</div>
+
+
+</div>
+
+<div id="detailModal" class="modal">
+
+<div class="modal-content">
+
+<h2>
+🍜 Detail Pemeriksaan
+</h2>
+
+<div id="detailIsi">
+
+</div>
+
+<button onclick="tutupDetail()">
+Tutup
+</button>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="js/config.js"></script>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+
+</html>
