@@ -1,2 +1,2 @@
 const API =
-"http://localhost:5000/api";
+"https://project-food-check-umkm-production.up.railway.app/";
