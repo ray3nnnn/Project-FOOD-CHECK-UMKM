@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+Riwayat Pemeriksaan
+</title>
+
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+
+<div class="brand">
+
+<h2>
+🛡 Food Check
+</h2>
+
+<p>
+UMKM
+</p>
+
+</div>
+
+
+
+
+<div class="profile">
+
+<div class="avatar">
+A
+</div>
+
+
+<div>
+
+<b id="sidebarNama">
+</b>
+
+<small id="sidebarRole">
+</small>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="menu">
+
+
+<button onclick="location.href='dashboard.html'">
+
+🏠 Dashboard
+
+</button>
+
+<button 
+id="btnMenuPemeriksaan"
+onclick="location.href='pemeriksaan.html'">
+
+🍜 Pemeriksaan
+
+</button>
+
+<button onclick="location.href='riwayat.html'">
+
+📋 Riwayat Pemeriksaan
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<button 
+class="logout"
+onclick="logout()">
+
+🚪 Logout
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- CONTENT -->
+
+<div class="content">
+
+
+<h1>
+📋 Riwayat Pemeriksaan
+</h1>
+
+
+<p>
+Daftar hasil pemeriksaan makanan Anda.
+</p>
+
+
+
+
+<div class="manage">
+
+
+<h2>
+📊 Data Pemeriksaan
+</h2>
+
+
+<div id="ownerFilter" style="display:none;">
+
+
+<select id="filterMember">
+
+<option value="all">
+Semua Member
+</option>
+
+</select>
+
+
+<select id="filterHasil">
+
+<option value="all">
+Semua Status
+</option>
+
+
+<option value="LAYAK">
+LAYAK
+</option>
+
+
+<option value="TIDAK LAYAK">
+TIDAK LAYAK
+</option>
+
+
+</select>
+
+
+<input 
+id="searchMakanan"
+placeholder="Cari makanan..."
+>
+
+
+</div>
+
+
+
+<div id="data">
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+<!-- MODAL DETAIL -->
+
+<div id="detailModal" class="modal">
+
+<div class="modal-content">
+
+<h2>
+🍜 Detail Pemeriksaan
+</h2>
+
+
+<div id="detailIsi">
+
+</div>
+
+
+<button onclick="tutupDetail()">
+Tutup
+</button>
+
+
+</div>
+
+</div>
+
+
+<script src="js/config.js"></script>
+<script src="js/riwayat.js"></script>
+
+
+</body>
+
+</html>
