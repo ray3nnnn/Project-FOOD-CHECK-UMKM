@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 
 const {
     pool
-}=require("./database");
+} = require("./database");
 
 
 
@@ -14,11 +14,44 @@ async function createOwner(){
 try{
 
 
-const hash =
-await bcrypt.hash(
-    "owner123",
-    10
+// cek apakah owner sudah ada
+
+const cekOwner = await pool.query(
+
+`
+SELECT *
+FROM users
+WHERE username=$1
+`,
+
+[
+"owner"
+]
+
 );
+
+
+
+if(cekOwner.rows.length > 0){
+
+console.log(
+"Owner sudah ada"
+);
+
+process.exit();
+
+}
+
+
+
+
+
+const hash = await bcrypt.hash(
+"owner123",
+10
+);
+
+
 
 
 
@@ -34,8 +67,12 @@ INSERT INTO users
 )
 
 VALUES
-
-($1,$2,$3,'owner')
+(
+    $1,
+    $2,
+    $3,
+    $4
+)
 
 `,
 
@@ -45,7 +82,9 @@ VALUES
 
 "owner",
 
-hash
+hash,
+
+"owner"
 
 ]
 
@@ -53,8 +92,10 @@ hash
 
 
 
+
+
 console.log(
-"Owner berhasil dibuat"
+"✅ Owner berhasil dibuat"
 );
 
 
@@ -62,11 +103,16 @@ console.log(
 process.exit();
 
 
+
 }
 catch(error){
 
 
-console.log(error.message);
+console.log(
+"❌ Error:",
+error.message
+);
+
 
 process.exit(1);
 
