@@ -1435,3 +1435,24 @@ font-size:22px;
 }
 
 }
+
+/* =====================
+STATUS BAD OWNER
+===================== */
+
+
+.status.bad{
+
+background:#dc2626;
+
+color:white!important;
+
+padding:6px 14px;
+
+border-radius:20px;
+
+font-size:13px;
+
+font-weight:bold;
+
+}

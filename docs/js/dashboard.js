@@ -62,7 +62,20 @@ user.role;
 
 }
 
+// AVATAR DINAMIS
 
+const avatar =
+document.getElementById("avatar");
+
+
+if(avatar){
+
+avatar.innerHTML =
+user.nama
+.charAt(0)
+.toUpperCase();
+
+}
 
 
 
@@ -690,7 +703,19 @@ return;
 
 }
 
+if(data.length===0){
 
+box.innerHTML = `
+
+<p>
+Belum ada pemeriksaan terbaru.
+</p>
+
+`;
+
+return;
+
+}
 
 
 let html="";
