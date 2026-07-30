@@ -1,7 +1,6 @@
 async function register(){
 
 
-
 let nama =
 document.getElementById("nama").value;
 
@@ -15,9 +14,12 @@ document.getElementById("password").value;
 
 
 
+try{
+
+
 let response =
 await fetch(
-"http://localhost:5000/api/auth/register",
+API + "/auth/register",
 {
 
 
@@ -26,16 +28,20 @@ method:"POST",
 
 headers:{
 
+
 "Content-Type":"application/json"
+
 
 },
 
 
 body:JSON.stringify({
 
+
 nama,
 username,
 password
+
 
 })
 
@@ -57,7 +63,7 @@ alert(
 );
 
 
-window.location.href=
+window.location.href =
 "index.html";
 
 
@@ -66,7 +72,26 @@ window.location.href=
 else{
 
 
-alert(data.message);
+alert(
+data.message
+);
+
+
+}
+
+
+
+}
+
+catch(error){
+
+
+console.log(error);
+
+
+alert(
+"Server tidak terhubung"
+);
 
 
 }
