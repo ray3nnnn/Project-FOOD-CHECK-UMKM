@@ -1,25 +1,42 @@
 async function register(){
 
 
-let nama =
-document.getElementById("nama").value;
+const nama =
+document.getElementById("nama").value.trim();
 
 
-let username =
-document.getElementById("username").value;
+const username =
+document.getElementById("username").value.trim();
 
 
-let password =
+const password =
 document.getElementById("password").value;
+
+
+
+
+if(!nama || !username || !password){
+
+alert(
+"Semua data wajib diisi"
+);
+
+return;
+
+}
+
+
 
 
 
 try{
 
 
-let response =
+const response =
 await fetch(
-API + "/auth/register",
+
+API+"/auth/register",
+
 {
 
 
@@ -31,27 +48,29 @@ headers:{
 
 "Content-Type":"application/json"
 
-
 },
 
 
 body:JSON.stringify({
 
-
 nama,
 username,
 password
 
-
 })
 
 
-});
+}
+
+);
 
 
 
-let data =
+
+
+const data =
 await response.json();
+
 
 
 
@@ -63,18 +82,20 @@ alert(
 );
 
 
-window.location.href =
+
+location.href =
 "index.html";
 
 
-}
 
+}
 else{
 
 
 alert(
 data.message
 );
+
 
 
 }

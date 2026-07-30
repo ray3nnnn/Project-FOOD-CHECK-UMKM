@@ -1,4 +1,3 @@
-
 const token =
 localStorage.getItem("token");
 
@@ -7,8 +6,9 @@ const user =
 JSON.parse(localStorage.getItem("user"));
 
 
-// PENGAMAN AGAR TIDAK DOUBLE SUBMIT
+// cegah double submit
 let sedangSimpan = false;
+
 
 
 if(!token || !user){
@@ -18,12 +18,31 @@ location.href="index.html";
 }
 
 
-document.getElementById("sidebarNama").innerHTML =
+
+const sidebarNama =
+document.getElementById("sidebarNama");
+
+
+const sidebarRole =
+document.getElementById("sidebarRole");
+
+
+if(sidebarNama){
+
+sidebarNama.innerHTML =
 user.nama;
 
+}
 
-document.getElementById("sidebarRole").innerHTML =
+
+if(sidebarRole){
+
+sidebarRole.innerHTML =
 user.role;
+
+}
+
+
 
 
 async function simpanPemeriksaanBaru(){
@@ -36,61 +55,100 @@ return;
 }
 
 
-// VALIDASI FORM
 
 const namaMakanan =
-document.getElementById("nama_makanan").value.trim();
+document.getElementById("nama_makanan")
+.value
+.trim();
 
 
 const kategori =
-document.getElementById("kategori").value.trim();
+document.getElementById("kategori")
+.value
+.trim();
+
+
+const kemasan =
+document.getElementById("kemasan")
+.value
+.trim();
+
+
+const warna =
+document.getElementById("warna")
+.value
+.trim();
+
+
+const aroma =
+document.getElementById("aroma")
+.value
+.trim();
+
+
+const tekstur =
+document.getElementById("tekstur")
+.value
+.trim();
+
+
+const tanggalProduksi =
+document.getElementById("tanggal_produksi")
+.value;
+
+
+const tanggalKadaluarsa =
+document.getElementById("tanggal_kadaluarsa")
+.value;
+
+
+const hasil =
+document.getElementById("hasil")
+.value;
 
 
 const catatan =
-document.getElementById("catatan").value.trim();
+document.getElementById("catatan")
+.value
+.trim();
+
+
 
 
 
 if(!namaMakanan){
 
-alert(
-"Nama makanan wajib diisi!"
-);
+alert("Nama makanan wajib diisi");
 
 return;
 
 }
-
 
 
 if(!kategori){
 
-alert(
-"Kategori makanan wajib diisi!"
-);
+alert("Kategori wajib diisi");
 
 return;
 
 }
-
 
 
 if(!catatan){
 
-alert(
-"Catatan pemeriksaan wajib diisi!"
-);
+alert("Catatan wajib diisi");
 
 return;
 
 }
+
+
 
 
 
 sedangSimpan=true;
 
 
-try{
 
 
 const data = {
@@ -100,36 +158,36 @@ nama_makanan:
 namaMakanan,
 
 
-nama_makanan:
-namaMakanan,
+kategori:
+kategori,
 
 
 kemasan:
-document.getElementById("kemasan").value,
+kemasan,
 
 
 warna:
-document.getElementById("warna").value,
+warna,
 
 
 aroma:
-document.getElementById("aroma").value,
+aroma,
 
 
 tekstur:
-document.getElementById("tekstur").value,
+tekstur,
 
 
 tanggal_produksi:
-document.getElementById("tanggal_produksi").value,
+tanggalProduksi,
 
 
 tanggal_kadaluarsa:
-document.getElementById("tanggal_kadaluarsa").value,
+tanggalKadaluarsa,
 
 
 hasil:
-document.getElementById("hasil").value,
+hasil,
 
 
 catatan:
@@ -140,13 +198,23 @@ catatan
 
 
 
-console.log("DATA KIRIM:",data);
 
+console.log(
+"DATA KIRIM",
+data
+);
+
+
+
+
+try{
 
 
 const response =
 await fetch(
+
 API+"/pemeriksaan",
+
 {
 
 
@@ -170,7 +238,13 @@ body:
 JSON.stringify(data)
 
 
-});
+}
+
+
+);
+
+
+
 
 
 const result =
@@ -178,10 +252,13 @@ await response.json();
 
 
 
+
 console.log(
-"HASIL SERVER:",
+"HASIL SERVER",
 result
 );
+
+
 
 
 
@@ -193,34 +270,43 @@ alert(
 );
 
 
-setTimeout(()=>{
 
-location.href="riwayat.html";
+location.href =
+"riwayat.html";
 
-},500);
 
 
 }
 else{
 
+
+alert(
+result.message
+);
+
+
 sedangSimpan=false;
 
-alert(result.message);
 
 }
 
 
 
 }
+
 catch(error){
+
 
 console.log(error);
 
-sedangSimpan=false;
 
 alert(
 "Gagal menyimpan pemeriksaan"
 );
+
+
+sedangSimpan=false;
+
 
 }
 
