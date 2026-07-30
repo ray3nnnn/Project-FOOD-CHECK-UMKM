@@ -12,58 +12,35 @@ const pool = new Pool({
 });
 
 
-async function testConnection(){
-
-try{
-
-await pool.query("SELECT 1");
-
-console.log("✅ PostgreSQL Connected");
-
-
-}
-catch(error){
-
-console.log(
-"Database Error:",
-error.message
-);
-
-}
-
-}
-
-
-module.exports={
-pool,
-testConnection
-};
-
 
 async function testConnection(){
 
-try{
+    try{
 
-await pool.query("SELECT 1");
+        await pool.query(
+            "SELECT 1"
+        );
 
-console.log("✅ PostgreSQL Connected");
+        console.log(
+            "✅ PostgreSQL Connected"
+        );
 
+
+    }
+    catch(error){
+
+        console.log(
+            "Database Error:",
+            error.message
+        );
+
+    }
 
 }
-catch(error){
-
-console.log(
-"Database Error:",
-error.message
-);
-
-}
 
 
-}
 
-
-module.exports={
-pool,
-testConnection
+module.exports = {
+    pool,
+    testConnection
 };

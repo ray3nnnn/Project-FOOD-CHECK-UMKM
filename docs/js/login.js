@@ -1,225 +1,81 @@
-let sedangLogin = false;
+require("dotenv").config();
+
+const bcrypt = require("bcryptjs");
+
+const {
+    pool
+}=require("./database");
 
 
 
-async function login(){
-
-
-
-if(sedangLogin){
-
-return;
-
-}
-
-
-sedangLogin = true;
-
-
-
-let username =
-document.getElementById("username").value.trim();
-
-
-let password =
-document.getElementById("password").value;
-
-
-
-if(username===""){
-
-alert("Username wajib diisi");
-
-sedangLogin=false;
-
-return;
-
-}
-
-
-
-if(password===""){
-
-alert("Password wajib diisi");
-
-sedangLogin=false;
-
-return;
-
-}
-
-
-
+async function createOwner(){
 
 
 try{
 
 
-
-let response =
-await fetch(
-
-API+"/auth/login",
-
-{
+const hash =
+await bcrypt.hash(
+    "owner123",
+    10
+);
 
 
-method:"POST",
 
+await pool.query(
 
-headers:{
+`
+INSERT INTO users
+(
+    nama,
+    username,
+    password,
+    role
+)
 
-"Content-Type":"application/json"
+VALUES
 
-},
+($1,$2,$3,'owner')
 
+`,
 
-body:JSON.stringify({
+[
 
-username,
+"Administrator",
 
-password
+"owner",
 
-})
+hash
 
-
-}
+]
 
 );
 
 
 
-
-let data =
-await response.json();
-
-
-
-
-
-console.log(data);
-
-
-
-
-
-if(data.success){
-
-
-
-localStorage.setItem(
-
-"token",
-
-data.token
-
+console.log(
+"Owner berhasil dibuat"
 );
 
 
 
-
-localStorage.setItem(
-
-"user",
-
-JSON.stringify(data.user)
-
-);
-
-
-
-
-
-alert("Login berhasil");
-
-
-
-
-window.location.href =
-"dashboard.html";
-
-
-
-
-
-}else{
-
-
-
-alert(data.message);
-
+process.exit();
 
 
 }
-
-
-
-}
-
 catch(error){
 
 
+console.log(error.message);
 
-console.log(error);
+process.exit(1);
 
 
-
-alert(
-"Server tidak terhubung"
-);
-
+}
 
 
 }
 
 
 
-sedangLogin=false;
-
-
-
-}
-
-
-
-
-
-
-
-// ======================
-// ENTER LOGIN
-// ======================
-
-
-document.addEventListener(
-"DOMContentLoaded",
-()=>{
-
-
-const form =
-document.getElementById("loginForm");
-
-
-if(form){
-
-
-form.addEventListener(
-"submit",
-function(e){
-
-
-e.preventDefault();
-
-
-login();
-
-
-}
-
-);
-
-
-}
-
-
-});
+createOwner();
