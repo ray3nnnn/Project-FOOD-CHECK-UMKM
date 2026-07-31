@@ -1,6 +1,13 @@
-// =================
-// CONFIG
-// =================
+/* ==================================================
+   DASHBOARD.JS FINAL CLEAN
+   FOOD CHECK UMKM
+================================================== */
+
+
+/* =====================
+   AUTH
+===================== */
+
 
 const token =
 localStorage.getItem("token");
@@ -15,199 +22,205 @@ localStorage.getItem("user")
 
 if(!token || !user){
 
-location.href="index.html";
+    location.href="index.html";
+
+    throw new Error("Unauthorized");
 
 }
 
 
 
-// simpan semua data owner
-
-let ownerData = [];
-
-let ownerChart = null;
 
 
-
-// =================
-// SIDEBAR
-// =================
+/* =====================
+   SIDEBAR
+===================== */
 
 
 const sidebarNama =
-document.getElementById(
-"sidebarNama"
-);
+document.getElementById("sidebarNama");
 
 
 const sidebarRole =
-document.getElementById(
-"sidebarRole"
-);
+document.getElementById("sidebarRole");
 
-
-
-if(sidebarNama){
-
-sidebarNama.innerHTML =
-user.nama;
-
-}
-
-
-if(sidebarRole){
-
-sidebarRole.innerHTML =
-user.role;
-
-}
-
-// AVATAR DINAMIS
 
 const avatar =
 document.getElementById("avatar");
 
 
-if(avatar){
 
-avatar.innerHTML =
-user.nama
-.charAt(0)
-.toUpperCase();
+
+if(sidebarNama){
+
+    sidebarNama.innerHTML =
+    user.nama || "-";
 
 }
 
 
 
-// =================
-// ELEMENT
-// =================
+if(sidebarRole){
+
+    sidebarRole.innerHTML =
+    user.role || "-";
+
+}
 
 
-const roleTitle =
-document.getElementById(
-"roleTitle"
-);
 
+if(avatar){
+
+    avatar.innerHTML =
+    (user.nama || "U")
+    .charAt(0)
+    .toUpperCase();
+
+}
+
+// =====================
+// HIDE MENU OWNER
+// =====================
+
+const menuPemeriksaan =
+document.getElementById("btnMenuPemeriksaan");
+
+
+if(menuPemeriksaan && user.role==="owner"){
+
+    menuPemeriksaan.style.display="none";
+
+}
+
+
+
+
+/* =====================
+   ELEMENT
+===================== */
 
 
 const welcome =
-document.getElementById(
-"welcome"
-);
+document.getElementById("welcome");
 
+
+const roleTitle =
+document.getElementById("roleTitle");
+
+
+const total =
+document.getElementById("total");
+
+
+const layak =
+document.getElementById("layak");
+
+
+const tidakLayak =
+document.getElementById("tidakLayak");
+
+
+const latestData =
+document.getElementById("latestData");
+
+
+const warningData =
+document.getElementById("warningData");
 
 
 const btnIsi =
-document.getElementById(
-"btnIsi"
-);
+document.getElementById("btnIsi");
+
+
+const btnRefresh =
+document.getElementById("btnRefresh");
+
+const ownerGrid =
+document.getElementById("ownerGrid");
+
+
+const chartBox =
+document.getElementById("chartBox");
+
+
+const warningBox =
+document.getElementById("warningBox");
+
+let chartInstance=null;
 
 
 
-const manageBox =
-document.getElementById(
-"manageBox"
-);
+let semuaData=[];
 
 
 
-const menuPemeriksaan =
-document.getElementById(
-"btnMenuPemeriksaan"
-);
+
+/* =====================
+   START
+===================== */
+
+
+loadDashboard();
 
 
 
-const filterOwnerBox =
-document.getElementById(
-"filterOwnerBox"
-);
 
 
 
-const filterMember =
-document.getElementById(
-"filterMember"
-);
+
+async function loadDashboard(){
 
 
-const modal =
-document.getElementById("detailModal");
-
-
-const detailIsi =
-document.getElementById("detailIsi");
-
-
-// =================
-// ROLE CONTROL
-// =================
+try{
 
 
 if(user.role==="owner"){
 
 
-if(roleTitle){
-
-roleTitle.innerHTML =
-"Dashboard Owner";
-
-}
-
-
-
-if(welcome){
-
-welcome.innerHTML =
-"Administrator";
-
-}
-
-
-
-if(btnIsi){
-
-btnIsi.style.display =
-"none";
-
-}
-
-
-
-if(menuPemeriksaan){
-
-menuPemeriksaan.style.display =
-"none";
-
-}
-
-
-
-if(manageBox){
-
-manageBox.style.display =
-"block";
-
-}
-
-
-
-if(filterOwnerBox){
-
-filterOwnerBox.style.display =
-"block";
-
-}
-
-
-
-loadOwner();
-
+    await loadOwner();
 
 
 }
 else{
+
+
+    await loadMember();
+
+
+}
+
+
+
+}
+catch(error){
+
+
+console.log(
+"DASHBOARD ERROR",
+error
+);
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+/* =====================
+   MEMBER DASHBOARD
+===================== */
+
+
+async function loadMember(){
+
 
 
 if(roleTitle){
@@ -228,302 +241,45 @@ user.nama;
 
 
 
-if(menuPemeriksaan){
-
-menuPemeriksaan.style.display =
-"block";
-
-}
-
-
-
 if(btnIsi){
 
-btnIsi.style.display =
-"block";
+btnIsi.style.display="block";
+
+}
+
+if(btnRefresh){
+
+btnRefresh.style.display="none";
+
+}
+
+// =====================
+// MEMBER UI FIX
+// =====================
+
+
+if(ownerGrid){
+
+ownerGrid.style.display="block";
 
 }
 
 
 
-if(manageBox){
+if(chartBox){
 
-manageBox.style.display =
-"none";
-
-}
-
-
-
-loadMember();
-
-
+chartBox.style.display="none";
 
 }
 
 
 
+if(warningBox){
 
-// =================
-// OWNER LOAD
-// =================
-
-
-async function loadOwner(){
-
-
-try{
-
-
-const response =
-await fetch(
-
-API+"/owner/dashboard",
-
-{
-
-headers:{
-
-Authorization:
-"Bearer "+token
+warningBox.style.display="none";
 
 }
 
-}
-
-);
-
-
-
-const result =
-await response.json();
-
-
-
-console.log(
-"OWNER DATA",
-result.data
-);
-
-
-
-ownerData =
-result.data || [];
-
-
-
-// sorting terbaru
-
-ownerData.sort(
-(a,b)=>
-new Date(b.created_at)
--
-new Date(a.created_at)
-);
-
-
-
-isiFilterMember(
-ownerData
-);
-
-
-
-hitung(
-ownerData
-);
-
-
-
-tampilkanTerbaru(
-ownerData
-);
-
-
-
-tampilkanPerhatian(
-ownerData
-);
-
-
-
-}
-
-catch(error){
-
-console.log(error);
-
-}
-
-
-}
-
-// =================
-// FILTER MEMBER
-// =================
-
-
-let filterSudahDipasang = false;
-
-
-
-function isiFilterMember(data){
-
-
-if(!filterMember){
-
-return;
-
-}
-
-
-
-let members = [];
-
-
-
-data.forEach(item=>{
-
-
-if(
-item.nama &&
-!members.includes(item.nama)
-){
-
-members.push(item.nama);
-
-}
-
-
-});
-
-
-
-
-let html = `
-
-<option value="all">
-Semua Member
-</option>
-
-`;
-
-
-
-members.forEach(nama=>{
-
-
-html += `
-
-<option value="${nama}">
-${nama}
-</option>
-
-`;
-
-
-
-});
-
-
-
-filterMember.innerHTML =
-html;
-
-
-
-
-
-// cegah event listener dobel
-
-if(!filterSudahDipasang){
-
-
-filterMember.addEventListener(
-"change",
-function(){
-
-
-let hasil;
-
-
-
-if(this.value==="all"){
-
-
-hasil =
-ownerData;
-
-
-}
-
-else{
-
-
-hasil =
-
-ownerData.filter(
-
-item =>
-
-item.nama === this.value
-
-);
-
-
-}
-
-
-
-
-
-hitung(
-hasil
-);
-
-
-
-tampilkanTerbaru(
-hasil
-);
-
-
-
-tampilkanPerhatian(
-hasil
-);
-
-
-
-}
-
-);
-
-
-
-filterSudahDipasang=true;
-
-
-}
-
-
-
-}
-
-
-
-
-
-// =================
-// MEMBER LOAD
-// =================
-
-
-
-async function loadMember(){
-
-
-try{
 
 
 const response =
@@ -546,72 +302,200 @@ Authorization:
 
 
 
+
+
+if(response.status===401){
+
+logout();
+
+return;
+
+}
+
+
+
+
 const result =
 await response.json();
 
 
 
-console.log(
-"MEMBER DATA",
-result
+
+
+const data =
+result.data || [];
+
+
+
+
+
+
+hitungStatistik(data);
+
+
+
+
+
+
+if(latestData){
+
+
+latestData.innerHTML =
+
+buatCardTerbaru(
+data
+.slice(0,3)
+);
+
+
+}
+
+
+
+
+}
+
+
+
+
+/* =====================
+   OWNER DASHBOARD
+===================== */
+
+
+async function loadOwner(){
+
+
+
+if(roleTitle){
+
+roleTitle.innerHTML =
+"Dashboard Owner";
+
+}
+
+
+
+if(welcome){
+
+welcome.innerHTML =
+user.nama;
+
+}
+
+
+
+
+
+if(btnIsi){
+
+btnIsi.style.display="none";
+
+}
+
+
+
+
+
+
+const response =
+await fetch(
+
+API+"/owner/dashboard",
+
+{
+
+headers:{
+
+Authorization:
+"Bearer "+token
+
+}
+
+}
+
 );
 
 
 
-hitung(
 
-result.data || []
 
+if(response.status===401){
+
+logout();
+
+return;
+
+}
+
+
+
+
+
+const result =
+await response.json();
+
+
+
+
+
+semuaData =
+result.data || [];
+
+
+
+
+
+hitungStatistik(
+semuaData
+);
+
+
+
+
+
+buatChart(
+semuaData
+);
+
+
+
+
+
+tampilkanTerbaru(
+semuaData
+);
+
+
+
+
+
+tampilkanWarning(
+semuaData
 );
 
 
 
 }
 
-catch(error){
-
-console.log(error);
-
-}
-
-
-
-}
 
 
 
 
 
-// =================
-// STATISTIK
-// =================
+
+
+/* =====================
+   STATISTIK
+===================== */
+
+
+function hitungStatistik(data){
 
 
 
-function hitung(data){
-
-
-
-const total =
-document.getElementById(
-"total"
-);
-
-
-
-const layak =
-document.getElementById(
-"layak"
-);
-
-
-
-const tidakLayak =
-document.getElementById(
-"tidakLayak"
-);
-
-
+const totalData =
+data.length;
 
 
 
@@ -629,7 +513,7 @@ item.hasil==="LAYAK"
 
 
 
-const jumlahTidakLayak =
+const jumlahTidak =
 
 data.filter(
 
@@ -643,11 +527,10 @@ item.hasil==="TIDAK LAYAK"
 
 
 
-
 if(total){
 
 total.innerHTML =
-data.length;
+totalData;
 
 }
 
@@ -665,470 +548,9 @@ jumlahLayak;
 if(tidakLayak){
 
 tidakLayak.innerHTML =
-jumlahTidakLayak;
+jumlahTidak;
 
 }
-
-
-
-buatChart(data);
-
-
-
-}
-
-
-
-
-// =================
-// PEMERIKSAAN TERBARU OWNER FINAL
-// =================
-
-function tampilkanTerbaru(data){
-
-
-const box =
-document.getElementById(
-"latestData"
-);
-
-
-
-if(!box){
-
-return;
-
-}
-
-
-
-let html = "";
-
-
-
-if(data.length === 0){
-
-
-html = `
-
-<div class="detail-card">
-
-<h3>
-📋 Belum Ada Pemeriksaan
-</h3>
-
-<p>
-Belum ada data pemeriksaan makanan.
-</p>
-
-</div>
-
-`;
-
-
-
-}
-else{
-
-
-data
-.slice(0,4)
-.forEach(item=>{
-
-
-const statusClass =
-
-item.hasil === "LAYAK"
-
-?
-
-"layak"
-
-:
-
-"tidak";
-
-
-
-const statusText =
-
-item.hasil === "LAYAK"
-
-?
-
-"🟢 LAYAK"
-
-:
-
-"🔴 TIDAK LAYAK";
-
-
-
-
-
-html += `
-
-
-<div class="detail-card">
-
-
-
-<h3>
-🍜 ${item.nama_makanan || "-"}
-</h3>
-
-
-
-<div class="detail-row">
-
-<span>
-Pemilik
-</span>
-
-
-<b>
-${item.nama || "-"}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Kategori
-</span>
-
-
-<b>
-${item.kategori || "-"}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Kemasan
-</span>
-
-
-<b>
-${item.kemasan || "-"}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Status
-</span>
-
-
-<b class="status ${statusClass}">
-
-${statusText}
-
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Catatan
-</span>
-
-
-<b>
-${item.catatan || "-"}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Tanggal Pemeriksaan
-</span>
-
-
-<b>
-${formatTanggal(item.created_at)}
-</b>
-
-
-</div>
-
-
-
-
-<button
-
-class="btnDetail"
-
-onclick="lihatDetail(${item.id})"
-
->
-
-🔎 Lihat Detail
-
-</button>
-
-
-
-</div>
-
-
-
-`;
-
-
-});
-
-
-}
-
-
-
-box.innerHTML =
-html;
-
-
-}
-
-
-
-
-
-// =================
-// MONITORING KEAMANAN PANGAN FINAL
-// =================
-
-
-function tampilkanPerhatian(data){
-
-
-const box =
-document.getElementById(
-"warningData"
-);
-
-
-
-if(!box){
-
-return;
-
-}
-
-
-
-
-
-const masalah =
-
-data.filter(
-
-item =>
-
-item.hasil === "TIDAK LAYAK"
-
-);
-
-
-
-
-
-let html="";
-
-
-
-
-
-if(masalah.length===0){
-
-
-html = `
-
-<div class="detail-card">
-
-<h3>
-✅ Kondisi Aman
-</h3>
-
-
-<p>
-Semua pemeriksaan makanan dalam kondisi baik.
-</p>
-
-
-</div>
-
-`;
-
-
-}
-else{
-
-
-
-html += `
-
-
-<div class="detail-card">
-
-
-<h3>
-⚠️ ${masalah.length} Makanan Membutuhkan Perhatian
-</h3>
-
-
-<p>
-Berikut makanan dengan hasil pemeriksaan tidak layak.
-</p>
-
-
-</div>
-
-
-`;
-
-
-
-
-
-masalah
-.slice(0,5)
-.forEach(item=>{
-
-
-
-html += `
-
-
-<div class="detail-card">
-
-
-<h3>
-🔴 ${item.nama_makanan || "-"}
-</h3>
-
-
-
-
-<div class="detail-row">
-
-<span>
-Pemilik
-</span>
-
-
-<b>
-${item.nama || "-"}
-</b>
-
-
-</div>
-
-
-
-
-<div class="detail-row">
-
-<span>
-Kategori
-</span>
-
-
-<b>
-${item.kategori || "-"}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Masalah
-</span>
-
-
-<b>
-${item.catatan || "-"}
-</b>
-
-
-</div>
-
-
-
-
-<div class="detail-row">
-
-<span>
-Tanggal Pemeriksaan
-</span>
-
-
-<b>
-${formatTanggal(item.created_at)}
-</b>
-
-
-</div>
-
-
-
-
-</div>
-
-
-`;
-
-
-
-});
-
-
-
-}
-
-
-
-
-box.innerHTML =
-html;
 
 
 
@@ -1141,9 +563,10 @@ html;
 
 
 
-// =================
-// CHART STATISTIK OWNER
-// =================
+
+/* =====================
+   CHART
+===================== */
 
 
 function buatChart(data){
@@ -1167,11 +590,18 @@ return;
 
 
 
+const ctx =
+canvas.getContext("2d");
+
+
+
+
+
 const jumlahLayak =
 
 data.filter(
 
-item =>
+item=>
 
 item.hasil==="LAYAK"
 
@@ -1181,11 +611,11 @@ item.hasil==="LAYAK"
 
 
 
-const jumlahTidakLayak =
+const jumlahTidak =
 
 data.filter(
 
-item =>
+item=>
 
 item.hasil==="TIDAK LAYAK"
 
@@ -1195,9 +625,11 @@ item.hasil==="TIDAK LAYAK"
 
 
 
-if(ownerChart){
 
-ownerChart.destroy();
+
+if(chartInstance){
+
+chartInstance.destroy();
 
 }
 
@@ -1205,11 +637,12 @@ ownerChart.destroy();
 
 
 
-ownerChart =
 
+
+chartInstance =
 new Chart(
 
-canvas,
+ctx,
 
 {
 
@@ -1217,15 +650,14 @@ canvas,
 type:"doughnut",
 
 
-
 data:{
 
 
 labels:[
 
-"LAYAK",
+"Layak",
 
-"TIDAK LAYAK"
+"Tidak Layak"
 
 ],
 
@@ -1237,17 +669,14 @@ data:[
 
 jumlahLayak,
 
-jumlahTidakLayak
+jumlahTidak
 
 ]
-
 
 }]
 
 
 },
-
-
 
 
 options:{
@@ -1256,6 +685,8 @@ options:{
 responsive:true,
 
 
+maintainAspectRatio:true,
+
 
 plugins:{
 
@@ -1263,7 +694,10 @@ plugins:{
 legend:{
 
 
-position:"bottom"
+position:"top"
+
+
+}
 
 
 }
@@ -1271,11 +705,6 @@ position:"bottom"
 
 
 }
-
-
-
-}
-
 
 
 }
@@ -1290,63 +719,20 @@ position:"bottom"
 
 
 
-// =================
-// FORMAT TANGGAL
-// =================
-
-
-function formatTanggal(tanggal){
-
-
-if(!tanggal){
-
-return "-";
-
-}
-
-
-
-return new Date(tanggal)
-
-.toLocaleDateString(
-
-"id-ID"
-
-);
-
-
-
-}
-
-// =================
-// DETAIL PEMERIKSAAN OWNER
-// =================
-
-
-function lihatDetail(id){
-
-
-const item =
-
-ownerData.find(
-
-data =>
-
-data.id == id
-
-);
 
 
 
 
+/* =====================
+   TERBARU
+===================== */
 
-if(!item){
+
+function tampilkanTerbaru(data){
 
 
-alert(
-"Data pemeriksaan tidak ditemukan"
-);
 
+if(!latestData){
 
 return;
 
@@ -1354,32 +740,35 @@ return;
 
 
 
+const terbaru =
+
+[...data]
+
+.sort(
+
+(a,b)=>
+
+new Date(b.created_at)
+
+-
+
+new Date(a.created_at)
+
+)
+
+.slice(0,5);
 
 
-const modal =
 
-document.getElementById(
-"detailModal"
+
+
+latestData.innerHTML =
+
+buatCardTerbaru(
+terbaru
 );
 
 
-
-
-
-const isi =
-
-document.getElementById(
-"detailIsi"
-);
-
-
-
-
-
-if(modal){
-
-modal.style.display =
-"flex";
 
 }
 
@@ -1387,290 +776,218 @@ modal.style.display =
 
 
 
-if(isi){
+function buatCardTerbaru(data){
 
 
 
-isi.innerHTML = `
+if(data.length===0){
 
 
-<h2>
+return `
+
+<p>
+
+Belum ada pemeriksaan.
+
+</p>
+
+`;
+
+
+}
+
+
+
+
+let html="";
+
+
+
+
+data.forEach(item=>{
+
+
+
+html += `
+
+<div class="detail-card">
+
+
+<h3>
+
 🍜 ${item.nama_makanan || "-"}
-</h2>
+
+</h3>
 
 
 
-<div class="detail-row">
+<p>
 
-<span>
-Pemilik
-</span>
+👤 ${item.nama || "-"}
+
+</p>
 
 
-<b>
-${item.nama || "-"}
-</b>
+<p>
+
+🛡 ${item.hasil || "-"}
+
+</p>
+
 
 
 </div>
-
-
-
-
-<div class="detail-row">
-
-<span>
-Kategori
-</span>
-
-
-<b>
-${item.kategori || "-"}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Kemasan
-</span>
-
-
-<b>
-${item.kemasan || "-"}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Warna
-</span>
-
-
-<b>
-${item.warna || "-"}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Aroma
-</span>
-
-
-<b>
-${item.aroma || "-"}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Tekstur
-</span>
-
-
-<b>
-${item.tekstur || "-"}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Hasil Pemeriksaan
-</span>
-
-
-<b class="status ${item.hasil==="LAYAK"?"layak":"tidak"}">
-
-${item.hasil==="LAYAK" ? "🟢 LAYAK" : "🔴 TIDAK LAYAK"}
-
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Tanggal Produksi
-</span>
-
-
-<b>
-${formatTanggal(item.tanggal_produksi)}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Tanggal Kadaluarsa
-</span>
-
-
-<b>
-${formatTanggal(item.tanggal_kadaluarsa)}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Catatan
-</span>
-
-
-<b>
-${item.catatan || "-"}
-</b>
-
-
-</div>
-
-
-
-
-
-<div class="detail-row">
-
-<span>
-Tanggal Pemeriksaan
-</span>
-
-
-<b>
-${formatTanggal(item.created_at)}
-</b>
-
-
-</div>
-
 
 
 `;
 
 
 
+});
+
+
+
+return html;
+
+
+
 }
 
 
+
+
+
+
+
+
+
+/* =====================
+   WARNING
+===================== */
+
+
+function tampilkanWarning(data){
+
+
+
+if(!warningData){
+
+return;
+
 }
 
 
 
+const warning =
 
+data.filter(
 
+item=>
 
+item.hasil==="TIDAK LAYAK"
 
-// =================
-// TUTUP DETAIL
-// =================
-
-
-function tutupDetail(){
-
-const modal =
-document.getElementById(
-"detailModal"
 );
 
 
-if(modal){
 
-modal.style.display="none";
+
+
+if(warning.length===0){
+
+
+warningData.innerHTML=
+
+`
+
+<p>
+
+✅ Semua makanan dalam kondisi aman.
+
+</p>
+
+`;
+
+return;
+
 
 }
 
+
+
+
+
+let html="";
+
+
+
+
+
+warning.forEach(item=>{
+
+
+
+html+=`
+
+<div class="detail-card">
+
+
+<h3>
+
+⚠️ ${item.nama_makanan || "-"}
+
+</h3>
+
+
+
+<p>
+
+Pemilik:
+${item.nama || "-"}
+
+</p>
+
+
+</div>
+
+`;
+
+
+
+});
+
+
+
+
+
+warningData.innerHTML =
+html;
+
+
+
 }
 
 
 
-// =================
-// LOGOUT
-// =================
+
+
+
+
+
+/* =====================
+   LOGOUT
+===================== */
 
 
 function logout(){
 
 
-localStorage.clear();
+
+localStorage.removeItem("token");
+
+localStorage.removeItem("user");
 
 
-location.href =
-"index.html";
-
-
-}
-
-
-
-
-
-// =================
-// REALTIME OWNER
-// =================
-
-
-if(user.role==="owner"){
-
-
-
-setInterval(()=>{
-
-loadOwner();
-
-},30000);
-
+location.href="index.html";
 
 
 }

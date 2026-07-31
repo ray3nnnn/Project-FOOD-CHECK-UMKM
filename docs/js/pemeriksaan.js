@@ -1,144 +1,141 @@
+/* ==================================================
+   PEMERIKSAAN.JS FINAL CLEAN
+   FOOD CHECK UMKM
+================================================== */
+
+
+/* =====================
+   AUTH
+===================== */
+
+
 const token =
 localStorage.getItem("token");
 
 
 const user =
-JSON.parse(localStorage.getItem("user"));
-
-
-// cegah double submit
-let sedangSimpan = false;
+JSON.parse(
+localStorage.getItem("user")
+);
 
 
 
 if(!token || !user){
 
+
 location.href="index.html";
+
 
 }
 
 
 
+
+
+
+/* =====================
+   SIDEBAR
+===================== */
+
+
 const sidebarNama =
-document.getElementById("sidebarNama");
+document.getElementById(
+"sidebarNama"
+);
 
 
 const sidebarRole =
-document.getElementById("sidebarRole");
+document.getElementById(
+"sidebarRole"
+);
+
+
+const avatar =
+document.getElementById(
+"avatar"
+);
+
+
+
 
 
 if(sidebarNama){
 
+
 sidebarNama.innerHTML =
-user.nama;
+user.nama || "-";
+
 
 }
+
+
+
 
 
 if(sidebarRole){
 
+
 sidebarRole.innerHTML =
-user.role;
+user.role || "-";
+
 
 }
 
 
+
+
+
+if(avatar){
+
+
+avatar.innerHTML =
+
+(user.nama || "U")
+
+.charAt(0)
+
+.toUpperCase();
+
+
+}
+
+
+
+
+
+
+
+
+/* =====================
+   SUBMIT LOCK
+===================== */
+
+
+let sedangSimpan=false;
+
+
+
+
+
+
+
+
+/* =====================
+   SIMPAN PEMERIKSAAN
+===================== */
 
 
 async function simpanPemeriksaanBaru(){
 
 
+
+
+
 if(sedangSimpan){
 
-return;
-
-}
-
-
-
-const namaMakanan =
-document.getElementById("nama_makanan")
-.value
-.trim();
-
-
-const kategori =
-document.getElementById("kategori")
-.value
-.trim();
-
-
-const kemasan =
-document.getElementById("kemasan")
-.value
-.trim();
-
-
-const warna =
-document.getElementById("warna")
-.value
-.trim();
-
-
-const aroma =
-document.getElementById("aroma")
-.value
-.trim();
-
-
-const tekstur =
-document.getElementById("tekstur")
-.value
-.trim();
-
-
-const tanggalProduksi =
-document.getElementById("tanggal_produksi")
-.value;
-
-
-const tanggalKadaluarsa =
-document.getElementById("tanggal_kadaluarsa")
-.value;
-
-
-const hasil =
-document.getElementById("hasil")
-.value;
-
-
-const catatan =
-document.getElementById("catatan")
-.value
-.trim();
-
-
-
-
-
-if(!namaMakanan){
-
-alert("Nama makanan wajib diisi");
 
 return;
 
-}
-
-
-if(!kategori){
-
-alert("Kategori wajib diisi");
-
-return;
-
-}
-
-
-if(!catatan){
-
-alert("Catatan wajib diisi");
-
-return;
 
 }
 
@@ -146,52 +143,92 @@ return;
 
 
 
-sedangSimpan=true;
-
-
+/* =====================
+   AMBIL INPUT
+===================== */
 
 
 const data = {
 
 
 nama_makanan:
-namaMakanan,
+
+getValue(
+"nama_makanan"
+),
+
 
 
 kategori:
-kategori,
+
+getValue(
+"kategori"
+),
+
 
 
 kemasan:
-kemasan,
+
+getValue(
+"kemasan"
+),
+
 
 
 warna:
-warna,
+
+getValue(
+"warna"
+),
+
 
 
 aroma:
-aroma,
+
+getValue(
+"aroma"
+),
+
 
 
 tekstur:
-tekstur,
+
+getValue(
+"tekstur"
+),
+
 
 
 tanggal_produksi:
-tanggalProduksi,
+
+getValue(
+"tanggal_produksi"
+),
+
 
 
 tanggal_kadaluarsa:
-tanggalKadaluarsa,
+
+getValue(
+"tanggal_kadaluarsa"
+),
+
 
 
 hasil:
-hasil,
+
+getValue(
+"hasil"
+),
+
 
 
 catatan:
-catatan
+
+getValue(
+"catatan"
+)
+
 
 
 };
@@ -199,10 +236,179 @@ catatan
 
 
 
-console.log(
-"DATA KIRIM",
-data
+
+
+
+
+
+
+/* =====================
+   VALIDASI
+===================== */
+
+
+
+if(!data.nama_makanan){
+
+
+showToast(
+
+"Nama makanan wajib diisi",
+
+"warning"
+
 );
+
+
+return;
+
+
+}
+
+
+
+
+if(!data.kategori){
+
+
+showToast(
+
+"Kategori wajib diisi",
+
+"warning"
+
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+if(!data.catatan){
+
+
+showToast(
+
+"Catatan pemeriksaan wajib diisi",
+
+"warning"
+
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
+if(
+
+data.tanggal_produksi &&
+
+data.tanggal_kadaluarsa
+
+){
+
+
+
+const produksi =
+new Date(
+data.tanggal_produksi
+);
+
+
+
+const kadaluarsa =
+new Date(
+data.tanggal_kadaluarsa
+);
+
+
+
+
+
+if(kadaluarsa < produksi){
+
+
+
+showToast(
+
+"Tanggal kadaluarsa tidak boleh sebelum produksi",
+
+"warning"
+
+);
+
+
+
+return;
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* =====================
+   KIRIM DATA
+===================== */
+
+
+sedangSimpan=true;
+
+
+
+
+
+const tombol =
+document.querySelector(
+".btnSimpan"
+);
+
+
+
+
+if(tombol){
+
+
+tombol.disabled=true;
+
+
+tombol.innerHTML=
+"⏳ Menyimpan...";
+
+
+}
+
+
+
+
 
 
 
@@ -210,7 +416,9 @@ data
 try{
 
 
+
 const response =
+
 await fetch(
 
 API+"/pemeriksaan",
@@ -221,25 +429,32 @@ API+"/pemeriksaan",
 method:"POST",
 
 
+
 headers:{
 
 
-"Content-Type":"application/json",
+"Content-Type":
+
+"application/json",
+
 
 
 Authorization:
+
 "Bearer "+token
 
 
 },
 
 
+
 body:
+
 JSON.stringify(data)
 
 
-}
 
+}
 
 );
 
@@ -247,8 +462,33 @@ JSON.stringify(data)
 
 
 
+
+
+
+if(response.status===401){
+
+
+
+logout();
+
+
+return;
+
+
+}
+
+
+
+
+
+
+
+
 const result =
 await response.json();
+
+
+
 
 
 
@@ -262,17 +502,35 @@ result
 
 
 
+
+
+
+
 if(result.success){
 
 
-alert(
-"Pemeriksaan berhasil disimpan"
+
+showToast(
+
+"Pemeriksaan berhasil disimpan",
+
+"success"
+
 );
 
 
 
-location.href =
+
+
+setTimeout(()=>{
+
+
+location.href=
 "riwayat.html";
+
+
+},800);
+
 
 
 
@@ -280,36 +538,175 @@ location.href =
 else{
 
 
-alert(
-result.message
+
+showToast(
+
+result.message ||
+
+"Gagal menyimpan data",
+
+"error"
+
 );
 
 
-sedangSimpan=false;
+
+aktifkanTombol();
 
 
 }
 
 
 
-}
 
+
+
+
+
+}
 catch(error){
 
 
-console.log(error);
 
+console.log(
 
-alert(
-"Gagal menyimpan pemeriksaan"
+"PEMERIKSAAN ERROR",
+
+error
+
 );
+
+
+
+
+showToast(
+
+"Gagal terhubung ke server",
+
+"error"
+
+);
+
+
+
+aktifkanTombol();
+
+
+
+}
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================
+   HELPER
+===================== */
+
+
+function getValue(id){
+
+
+
+const el =
+document.getElementById(id);
+
+
+
+
+if(!el){
+
+return "";
+
+}
+
+
+
+return el.value.trim();
+
+
+
+}
+
+
+
+
+
+
+
+
+function aktifkanTombol(){
+
 
 
 sedangSimpan=false;
 
 
+
+const tombol =
+document.querySelector(
+".btnSimpan"
+);
+
+
+
+
+
+if(tombol){
+
+
+tombol.disabled=false;
+
+
+tombol.innerHTML=
+
+"💾 Simpan Pemeriksaan";
+
+
 }
 
+
+
+}
+
+
+
+
+
+
+
+
+/* =====================
+   LOGOUT FALLBACK
+===================== */
+
+
+function logout(){
+
+
+
+localStorage.removeItem(
+"token"
+);
+
+
+localStorage.removeItem(
+"user"
+);
+
+
+
+location.href=
+"index.html";
 
 
 }

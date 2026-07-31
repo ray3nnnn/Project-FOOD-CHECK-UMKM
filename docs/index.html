@@ -12,7 +12,11 @@ Food Check UMKM
 </title>
 
 
-<link rel="stylesheet" href="css/login.css">
+<!-- cegah favicon 404 -->
+<link rel="icon" href="data:,">
+
+
+<link rel="stylesheet" href="css/style.css">
 
 
 </head>
@@ -22,12 +26,92 @@ Food Check UMKM
 
 
 
-<div class="login-card">
+<!-- ======================
+LOADING
+====================== -->
 
 
+<div id="loading">
 
-<div class="logo">
+
+<div class="loader">
 🛡️
+</div>
+
+
+<h3>
+Food Check UMKM
+</h3>
+
+
+<p>
+Memeriksa keamanan pangan...
+</p>
+
+
+<div class="loading-bar">
+
+<span></span>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ======================
+LOGIN WRAPPER
+====================== -->
+
+
+<div class="login-wrapper">
+
+
+
+
+
+<!-- FLOATING FOOD -->
+
+
+<div class="food-floating">
+
+
+<span>🥕</span>
+<span>🥦</span>
+<span>🍅</span>
+<span>🥒</span>
+<span>🧄</span>
+<span>🌶️</span>
+<span>🫑</span>
+<span>🍎</span>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- BRAND -->
+
+
+<div class="login-brand">
+
+
+<div class="login-logo">
+
+🛡️
+
 </div>
 
 
@@ -39,10 +123,75 @@ Food Check UMKM
 
 
 
+<h3>
+Sistem Pemeriksaan Keamanan Pangan UMKM
+</h3>
+
+
+
 
 <p>
-Sistem Pemeriksaan Keamanan Pangan
+
+Pantau kualitas makanan,
+catat hasil pemeriksaan,
+dan tingkatkan kepercayaan pelanggan.
+
 </p>
+
+
+
+
+
+<div class="feature">
+
+
+<div>
+✅ Pemeriksaan Produk
+</div>
+
+
+<div>
+📊 Monitoring Keamanan
+</div>
+
+
+<div>
+👥 Manajemen UMKM
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- LOGIN CARD -->
+
+
+<div class="login-card">
+
+
+
+<h2>
+🔐 Login
+</h2>
+
+
+
+<p>
+Masuk ke akun Anda
+</p>
+
+
 
 
 
@@ -52,18 +201,30 @@ Sistem Pemeriksaan Keamanan Pangan
 
 
 
+
+
+
 <label>
 Username
 </label>
 
 
-<input 
+<input
+
 id="username"
-name="username"
+
+type="text"
+
 placeholder="Masukkan username"
+
 autocomplete="username"
+
 required
+
 >
+
+
+
 
 
 
@@ -74,21 +235,65 @@ Password
 </label>
 
 
-<input 
+
+<div class="password-box">
+
+
+
+<input
+
 id="password"
-name="password"
+
 type="password"
+
 placeholder="Masukkan password"
+
 autocomplete="current-password"
+
 required
+
 >
 
 
 
 
-<button type="submit">
-🔐 Masuk
+<button
+
+type="button"
+
+id="togglePassword"
+
+class="btn-password">
+
+
+👁️
+
+
 </button>
+
+
+
+</div>
+
+
+
+
+
+
+
+<button
+
+type="submit">
+
+
+🔐 Masuk
+
+
+</button>
+
+
+
+
 
 
 
@@ -98,16 +303,26 @@ required
 
 
 
-<p>
+
+
+
+<div class="register-link">
+
 
 Belum memiliki akun?
 
+
 <a href="register.html">
-Daftar sekarang
+
+Daftar Sekarang
+
 </a>
 
 
-</p>
+
+</div>
+
+
 
 
 
@@ -116,8 +331,249 @@ Daftar sekarang
 
 
 
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- TOAST -->
+
+
+<div id="toast"></div>
+
+
+
+
+
+
+
+
+
+
 <script src="js/config.js"></script>
+
+<script src="js/toast.js"></script>
+
 <script src="js/login.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+
+
+// ======================
+// LOADING SYSTEM
+// ======================
+
+
+window.addEventListener(
+"load",
+()=>{
+
+
+setTimeout(()=>{
+
+
+const loading =
+document.getElementById("loading");
+
+
+if(loading){
+
+loading.classList.add("hide");
+
+}
+
+
+
+const wrapper =
+document.querySelector(".login-wrapper");
+
+
+if(wrapper){
+
+wrapper.classList.add("show");
+
+}
+
+
+
+},1200);
+
+
+
+});
+
+
+
+
+
+
+
+
+
+// ======================
+// LOGIN SUBMIT
+// ======================
+
+
+const formLogin =
+document.getElementById("loginForm");
+
+
+
+if(formLogin){
+
+
+formLogin.addEventListener(
+"submit",
+(e)=>{
+
+
+e.preventDefault();
+
+
+login();
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================
+// ENTER USERNAME
+// ======================
+
+
+const usernameInput =
+document.getElementById("username");
+
+
+
+if(usernameInput){
+
+
+usernameInput.addEventListener(
+"keydown",
+(e)=>{
+
+
+if(e.key==="Enter"){
+
+
+e.preventDefault();
+
+
+document
+.getElementById("password")
+.focus();
+
+
+}
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================
+// SHOW HIDE PASSWORD
+// ======================
+
+
+const passwordInput =
+document.getElementById("password");
+
+
+
+const togglePassword =
+document.getElementById("togglePassword");
+
+
+
+
+
+if(togglePassword && passwordInput){
+
+
+
+togglePassword.addEventListener(
+"click",
+()=>{
+
+
+
+if(passwordInput.type==="password"){
+
+
+
+passwordInput.type="text";
+
+
+togglePassword.innerHTML="🙈";
+
+
+
+}
+else{
+
+
+
+passwordInput.type="password";
+
+
+togglePassword.innerHTML="👁️";
+
+
+
+}
+
+
+
+});
+
+
+}
+
+
+
+</script>
+
+
+
 
 
 </body>

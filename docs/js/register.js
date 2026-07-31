@@ -2,26 +2,54 @@ async function register(){
 
 
 const nama =
-document.getElementById("nama").value.trim();
+document.getElementById("nama")
+.value.trim();
 
 
 const username =
-document.getElementById("username").value.trim();
+document.getElementById("username")
+.value.trim();
 
 
 const password =
-document.getElementById("password").value;
-
+document.getElementById("password")
+.value;
 
 
 
 if(!nama || !username || !password){
 
-alert(
-"Semua data wajib diisi"
+
+showToast(
+
+"⚠️ Semua data wajib diisi",
+
+"warning"
+
 );
 
+
 return;
+
+}
+
+
+
+
+
+const button =
+document.querySelector(
+".register-card button"
+);
+
+
+
+if(button){
+
+button.disabled=true;
+
+button.innerHTML=
+"⏳ Membuat akun...";
 
 }
 
@@ -54,7 +82,9 @@ headers:{
 body:JSON.stringify({
 
 nama,
+
 username,
+
 password
 
 })
@@ -74,31 +104,58 @@ await response.json();
 
 
 
+
+
 if(data.success){
 
 
-alert(
-"Registrasi berhasil"
+
+showToast(
+
+"✅ Registrasi berhasil",
+
+"success"
+
 );
 
 
 
-location.href =
-"index.html";
+
+
+setTimeout(()=>{
+
+
+location.href="index.html";
+
+
+},1200);
 
 
 
 }
+
 else{
 
 
-alert(
-data.message
+showToast(
+
+"❌ "+data.message,
+
+"error"
+
 );
 
 
 
+button.disabled=false;
+
+button.innerHTML=
+"📝 Daftar";
+
+
 }
+
+
 
 
 
@@ -107,13 +164,25 @@ data.message
 catch(error){
 
 
+
 console.log(error);
 
 
-alert(
-"Server tidak terhubung"
+
+showToast(
+
+"❌ Server tidak terhubung",
+
+"error"
+
 );
 
+
+
+button.disabled=false;
+
+button.innerHTML=
+"📝 Daftar";
 
 }
 

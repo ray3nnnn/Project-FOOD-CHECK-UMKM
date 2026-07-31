@@ -5,13 +5,15 @@
 
 <meta charset="UTF-8">
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
 <title>
-Pemeriksaan Makanan
+Pemeriksaan Makanan - Food Check UMKM
 </title>
 
 
 <link rel="stylesheet" href="css/style.css">
-
 
 </head>
 
@@ -22,8 +24,10 @@ Pemeriksaan Makanan
 <div class="layout">
 
 
+<!-- ======================
+SIDEBAR
+====================== -->
 
-<!-- SIDEBAR -->
 
 <div class="sidebar">
 
@@ -45,8 +49,9 @@ UMKM
 
 <div class="profile">
 
-<div class="avatar">
-A
+
+<div class="avatar" id="avatar">
+
 </div>
 
 
@@ -55,11 +60,13 @@ A
 <b id="sidebarNama">
 </b>
 
+
 <small id="sidebarRole">
 </small>
 
 
 </div>
+
 
 </div>
 
@@ -86,7 +93,6 @@ A
 
 
 
-
 <button onclick="location.href='riwayat.html'">
 
 📋 Riwayat Pemeriksaan
@@ -94,9 +100,7 @@ A
 </button>
 
 
-
 </div>
-
 
 
 
@@ -119,28 +123,54 @@ onclick="logout()">
 
 
 
-<!-- CONTENT -->
+
+
+
+<!-- ======================
+CONTENT
+====================== -->
 
 
 <div class="content">
 
 
-
 <h1>
-🍜 Isi Pemeriksaan Makanan
+🍜 Pemeriksaan Makanan
 </h1>
 
 
+<p>
+Isi data pemeriksaan keamanan pangan produk UMKM.
+</p>
 
 
 
-<div class="manage">
 
+
+
+<div class="manage pemeriksaan-box">
+
+
+
+<div class="form-header">
 
 
 <h2>
-Form Pemeriksaan
+📝 Form Pemeriksaan
 </h2>
+
+
+<p>
+Lengkapi informasi makanan dengan benar.
+</p>
+
+
+
+</div>
+
+
+
+
 
 
 
@@ -148,141 +178,261 @@ Form Pemeriksaan
 
 
 
+<div class="form-grid">
+
+
+
+<div>
+
 <label>
-Nama Makanan
+🍜 Nama Makanan
 </label>
 
 
-<input 
+<input
+
 id="nama_makanan"
-required>
+
+placeholder="Contoh: Keripik Pisang"
+
+required
+
+>
+
+</div>
 
 
+
+
+
+
+<div>
 
 <label>
-Kategori
+📂 Kategori
 </label>
 
 
-<input 
+<input
+
 id="kategori"
-required>
+
+placeholder="Contoh: Makanan Ringan"
+
+required
+
+>
+
+</div>
+
+
+
+
+
+
+<div>
+
+<label>
+📦 Kemasan
+</label>
+
+
+<input
+
+id="kemasan"
+
+placeholder="Contoh: Plastik Vakum"
+
+>
+
+</div>
+
+
+
+
+
+
+<div>
+
+<label>
+🎨 Warna
+</label>
+
+
+<input
+
+id="warna"
+
+placeholder="Contoh: Kuning Keemasan"
+
+>
+
+</div>
+
+
+
+
+
+
+<div>
+
+<label>
+👃 Aroma
+</label>
+
+
+<input
+
+id="aroma"
+
+placeholder="Contoh: Normal"
+
+>
+
+</div>
+
+
+
+
+
+
+<div>
+
+<label>
+✋ Tekstur
+</label>
+
+
+<input
+
+id="tekstur"
+
+placeholder="Contoh: Renyah"
+
+>
+
+</div>
+
+
+
+</div>
+
+
+
 
 
 
 
 
 <label>
-Kemasan
+📅 Tanggal Produksi
 </label>
 
 
-<input 
-id="kemasan">
+<input
+
+type="date"
+
+id="tanggal_produksi"
+
+>
+
+
+
 
 
 
 
 
 <label>
-Warna
+📅 Tanggal Kadaluarsa
 </label>
 
 
-<input 
-id="warna">
+<input
+
+type="date"
+
+id="tanggal_kadaluarsa"
+
+>
+
+
 
 
 
 
 
 <label>
-Aroma
+🛡 Hasil Pemeriksaan
 </label>
 
-
-<input 
-id="aroma">
-
-
-
-
-
-<label>
-Tekstur
-</label>
-
-
-<input 
-id="tekstur">
-
-<label>
-Hasil Pemeriksaan
-</label>
 
 
 <select id="hasil">
 
+
 <option value="LAYAK">
-LAYAK
+
+🟢 LAYAK - Aman dikonsumsi
+
 </option>
+
 
 
 <option value="TIDAK LAYAK">
-TIDAK LAYAK
+
+🔴 TIDAK LAYAK - Membutuhkan perhatian
+
 </option>
+
 
 
 </select>
 
 
 
-<label>
-Tanggal Produksi
-</label>
-
-
-<input 
-type="date"
-id="tanggal_produksi">
 
 
 
 
 
 <label>
-Tanggal Kadaluarsa
+📝 Catatan Pemeriksaan
 </label>
 
 
-<input 
-type="date"
-id="tanggal_kadaluarsa">
 
+<textarea
 
-
-
-
-<label>
-Catatan
-</label>
-
-
-<textarea 
 id="catatan"
-required>
-</textarea>
+
+placeholder="Tambahkan catatan hasil pemeriksaan..."
+
+required
+
+></textarea>
 
 
 
 
-<button 
+
+
+
+<button
+
 type="button"
-onclick="simpanPemeriksaanBaru()">
 
-Simpan Pemeriksaan
+class="btnSimpan"
+
+onclick="simpanPemeriksaanBaru()"
+
+>
+
+💾 Simpan Pemeriksaan
 
 </button>
+
 
 
 
@@ -297,16 +447,30 @@ Simpan Pemeriksaan
 
 
 
+</div>
+
+
+
+
 
 </div>
 
 
 
-</div>
+
+
+
+
+
+<div id="toast"></div>
+
 
 
 
 <script src="js/config.js"></script>
+
+<script src="js/toast.js"></script>
+
 <script src="js/pemeriksaan.js"></script>
 
 
@@ -315,16 +479,35 @@ Simpan Pemeriksaan
 
 function logout(){
 
-localStorage.clear();
+
+localStorage.removeItem("token");
+
+localStorage.removeItem("user");
+
+
+showToast(
+"👋 Anda telah keluar",
+"success"
+);
+
+
+
+setTimeout(()=>{
 
 location.href="index.html";
 
+},800);
+
+
+
 }
+
 
 
 </script>
 
 
 </body>
+
 
 </html>

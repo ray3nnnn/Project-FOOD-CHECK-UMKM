@@ -1,9 +1,21 @@
+// =================================================
+// RIWAYAT.JS FINAL CLEAN
+// FOOD CHECK UMKM
+// =================================================
+
+
+// =======================
+// AUTH
+// =======================
+
 const token =
 localStorage.getItem("token");
 
 
 const user =
-JSON.parse(localStorage.getItem("user"));
+JSON.parse(
+localStorage.getItem("user")
+);
 
 
 
@@ -14,9 +26,10 @@ location.href="index.html";
 }
 
 
-// =================
+
+// =======================
 // SIDEBAR
-// =================
+// =======================
 
 
 const sidebarNama =
@@ -27,54 +40,66 @@ const sidebarRole =
 document.getElementById("sidebarRole");
 
 
+const avatar =
+document.getElementById("avatar");
+
+
 
 if(sidebarNama){
 
 sidebarNama.innerHTML =
-user.nama;
+user.nama || "-";
 
 }
+
 
 
 if(sidebarRole){
 
 sidebarRole.innerHTML =
-user.role;
+user.role || "-";
 
 }
 
 
 
+if(avatar){
 
-// =================
-// MENU
-// =================
+avatar.innerHTML =
+(user.nama || "U")
+.charAt(0)
+.toUpperCase();
+
+}
 
 
-const menuPemeriksaan =
+
+// =======================
+// ROLE MENU
+// =======================
+
+
+const btnMenuPemeriksaan =
 document.getElementById(
 "btnMenuPemeriksaan"
 );
 
 
 
-if(user.role==="owner"){
+if(
+user.role==="owner" &&
+btnMenuPemeriksaan
+){
 
-
-if(menuPemeriksaan){
-
-menuPemeriksaan.style.display="none";
-
-}
+btnMenuPemeriksaan.style.display="none";
 
 }
 
 
 
-
-// =================
+// =======================
 // ELEMENT
-// =================
+// =======================
 
 
 const dataBox =
@@ -82,29 +107,44 @@ document.getElementById("data");
 
 
 const ownerFilter =
-document.getElementById("ownerFilter");
+document.getElementById(
+"ownerFilter"
+);
 
 
 const filterMember =
-document.getElementById("filterMember");
+document.getElementById(
+"filterMember"
+);
 
 
 const filterHasil =
-document.getElementById("filterHasil");
+document.getElementById(
+"filterHasil"
+);
 
 
 const searchMakanan =
-document.getElementById("searchMakanan");
+document.getElementById(
+"searchMakanan"
+);
 
+
+
+
+// =======================
+// DATA GLOBAL
+// =======================
 
 
 let semuaData=[];
 
 
 
-// =================
+
+// =======================
 // LOAD
-// =================
+// =======================
 
 
 loadRiwayat();
@@ -119,15 +159,17 @@ async function loadRiwayat(){
 try{
 
 
-let url;
+let endpoint;
 
 
+
+// OWNER
 
 if(user.role==="owner"){
 
 
-url =
-API + "/owner/dashboard";
+endpoint =
+API+"/owner/dashboard";
 
 
 if(ownerFilter){
@@ -138,11 +180,22 @@ ownerFilter.style.display="flex";
 
 
 }
+
+
+// MEMBER
+
 else{
 
 
-url =
-API + "/pemeriksaan";
+endpoint =
+API+"/pemeriksaan";
+
+
+if(ownerFilter){
+
+ownerFilter.style.display="none";
+
+}
 
 
 }
@@ -152,21 +205,36 @@ API + "/pemeriksaan";
 
 const response =
 await fetch(
-
-url,
-
+endpoint,
 {
 
+
 headers:{
+
 
 Authorization:
 "Bearer "+token
 
+
 }
+
 
 }
 
 );
+
+
+
+
+
+if(response.status===401){
+
+logout();
+
+return;
+
+}
+
 
 
 
@@ -175,49 +243,54 @@ await response.json();
 
 
 
-console.log(
-"RIWAYAT",
-result
-);
-
-
 
 semuaData =
 result.data || [];
 
 
 
+
 semuaData.sort(
-
 (a,b)=>
-
 new Date(b.created_at)
 -
 new Date(a.created_at)
-
 );
+
 
 
 
 
 if(user.role==="owner"){
 
-buatFilterMember();
+buatFilterOwner();
 
 }
 
 
 
-tampilkan(
+
+renderRiwayat(
 semuaData
 );
 
 
 
 }
+
 catch(error){
 
-console.log(error);
+
+console.error(
+"RIWAYAT ERROR",
+error
+);
+
+
+showToast(
+"Gagal mengambil data"
+);
+
 
 }
 
@@ -229,13 +302,12 @@ console.log(error);
 
 
 
-
-// =================
+// =======================
 // FILTER OWNER
-// =================
+// =======================
 
 
-function buatFilterMember(){
+function buatFilterOwner(){
 
 
 if(!filterMember){
@@ -246,7 +318,8 @@ return;
 
 
 
-let member=[];
+let daftarMember=[];
+
 
 
 
@@ -254,14 +327,13 @@ semuaData.forEach(item=>{
 
 
 if(
-
 item.nama &&
-
-!member.includes(item.nama)
-
+!daftarMember.includes(item.nama)
 ){
 
-member.push(item.nama);
+daftarMember.push(
+item.nama
+);
 
 }
 
@@ -274,9 +346,7 @@ member.push(item.nama);
 let html=`
 
 <option value="all">
-
 Semua Member
-
 </option>
 
 `;
@@ -284,37 +354,37 @@ Semua Member
 
 
 
-member.forEach(nama=>{
+daftarMember.forEach(nama=>{
 
 
 html+=`
 
 <option value="${nama}">
-
 ${nama}
-
 </option>
 
 `;
-
 
 
 });
 
 
 
-filterMember.innerHTML =
+
+filterMember.innerHTML=
 html;
 
 
 
-filterMember.onchange =
+
+filterMember.onchange=
 jalankanFilter;
+
 
 
 if(filterHasil){
 
-filterHasil.onchange =
+filterHasil.onchange=
 jalankanFilter;
 
 }
@@ -323,7 +393,7 @@ jalankanFilter;
 
 if(searchMakanan){
 
-searchMakanan.onkeyup =
+searchMakanan.onkeyup=
 jalankanFilter;
 
 }
@@ -335,31 +405,32 @@ jalankanFilter;
 
 
 
-
+// =======================
+// FILTER SYSTEM
+// =======================
 
 
 function jalankanFilter(){
 
 
 let hasil =
-semuaData;
+[...semuaData];
 
 
+
+
+// MEMBER
 
 if(
 filterMember &&
 filterMember.value!=="all"
-
 ){
 
 
 hasil =
 hasil.filter(
-
 item=>
-
-item.nama === filterMember.value
-
+item.nama===filterMember.value
 );
 
 
@@ -368,53 +439,48 @@ item.nama === filterMember.value
 
 
 
-if(
+// STATUS
 
+if(
 filterHasil &&
-
 filterHasil.value!=="all"
-
 ){
 
 
 hasil =
 hasil.filter(
-
 item=>
-
-item.hasil === filterHasil.value
-
+item.hasil===filterHasil.value
 );
 
 
 }
 
 
+
+
+// SEARCH
 
 
 if(
-
 searchMakanan &&
-
-searchMakanan.value.trim() !== ""
-
+searchMakanan.value.trim()
 ){
+
+
+const keyword =
+searchMakanan.value
+.toLowerCase();
+
 
 
 hasil =
 hasil.filter(
+item=>
 
-item =>
-
-item.nama_makanan
-
+(item.nama_makanan||"")
 .toLowerCase()
-
-.includes(
-
-searchMakanan.value.toLowerCase()
-
-)
+.includes(keyword)
 
 );
 
@@ -424,7 +490,9 @@ searchMakanan.value.toLowerCase()
 
 
 
-tampilkan(hasil);
+renderRiwayat(
+hasil
+);
 
 
 
@@ -434,16 +502,12 @@ tampilkan(hasil);
 
 
 
+// =======================
+// RENDER CARD
+// =======================
 
 
-
-// =================
-// CARD COMPACT
-// =================
-
-
-
-function tampilkan(data){
+function renderRiwayat(data){
 
 
 if(!dataBox){
@@ -459,7 +523,10 @@ data;
 
 
 
+
 let html="";
+
+
 
 
 
@@ -468,42 +535,42 @@ if(data.length===0){
 
 html=`
 
+<div class="empty-data">
+
+
+<h3>
+📭 Belum Ada Pemeriksaan
+</h3>
+
+
 <p>
-
-Tidak ada data pemeriksaan.
-
+Belum terdapat data pemeriksaan makanan.
 </p>
+
+
+</div>
 
 `;
 
 
-
 }
+
 else{
 
 
-data.forEach((item,index)=>{
+
+data.forEach(
+(item,index)=>{
 
 
-
-let statusClass =
-
-item.hasil==="LAYAK"
-
-?
-
-"layak"
-
-:
-
-"tidak";
-
+const layak =
+item.hasil==="LAYAK";
 
 
 
 html+=`
 
-<div class="detail-card compact">
+<div class="detail-card riwayat-card">
 
 
 <h3>
@@ -515,163 +582,11 @@ html+=`
 <div class="detail-row">
 
 <span>
-Pemilik
-</span>
-
-
-<b>
-${item.nama || "-"}
-</b>
-
-
-</div>
-
-
-
-
-<div class="detail-row">
-
-<span>
-Status
-</span>
-
-
-<b class="status ${statusClass}">
-
-${item.hasil || "-"}
-
-</b>
-
-
-</div>
-
-
-
-
-<div class="detail-row">
-
-<span>
-Tanggal
-</span>
-
-
-<b>
-${formatTanggal(item.created_at)}
-</b>
-
-
-</div>
-
-
-
-
-
-<button
-
-class="btnDetail"
-
-onclick="lihatDetail(${index})"
-
->
-
-🔎 Detail
-
-</button>
-
-
-
-</div>
-
-
-`;
-
-
-
-});
-
-
-
-}
-
-
-
-dataBox.innerHTML =
-html;
-
-
-
-}
-
-
-
-
-
-
-
-
-// =================
-// MODAL DETAIL
-// =================
-
-
-
-function lihatDetail(index){
-
-const item =
-window.dataRiwayat[index];
-
-
-
-if(!item){
-
-return;
-
-}
-
-
-
-
-const modal =
-document.getElementById(
-"detailModal"
-);
-
-
-const isi =
-document.getElementById(
-"detailIsi"
-);
-
-
-
-if(modal){
-
-modal.style.display="flex";
-
-}
-
-
-
-
-if(isi){
-
-
-isi.innerHTML=`
-
-<h3>
-🍜 ${item.nama_makanan || "-"}
-</h3>
-
-
-
-<div class="detail-row">
-
-<span>
-Pemilik
+👤 Pemilik
 </span>
 
 <b>
-${item.nama || "-"}
+${item.nama || user.nama}
 </b>
 
 </div>
@@ -681,7 +596,7 @@ ${item.nama || "-"}
 <div class="detail-row">
 
 <span>
-Kategori
+📂 Kategori
 </span>
 
 <b>
@@ -695,7 +610,7 @@ ${item.kategori || "-"}
 <div class="detail-row">
 
 <span>
-Kemasan
+📦 Kemasan
 </span>
 
 <b>
@@ -710,89 +625,22 @@ ${item.kemasan || "-"}
 <div class="detail-row">
 
 <span>
-Warna
-</span>
-
-<b>
-${item.warna || "-"}
-</b>
-
-</div>
-
-
-
-<div class="detail-row">
-
-<span>
-Aroma
-</span>
-
-<b>
-${item.aroma || "-"}
-</b>
-
-</div>
-
-
-
-<div class="detail-row">
-
-<span>
-Tekstur
-</span>
-
-<b>
-${item.tekstur || "-"}
-</b>
-
-</div>
-
-
-
-<div class="detail-row">
-
-<span>
-Hasil Pemeriksaan
+🛡 Status
 </span>
 
 
-<b class="status ${item.hasil==="LAYAK"?"layak":"tidak"}">
-
-${item.hasil==="LAYAK" 
-? "🟢 LAYAK" 
-: "🔴 TIDAK LAYAK"}
-
-</b>
-
-</div>
+<b class="status ${
+layak
+?"layak"
+:"tidak"
+}">
 
 
+${layak?"🟢":"🔴"}
 
-<div class="detail-row">
-
-<span>
-Tanggal Produksi
-</span>
+${item.hasil || "-"}
 
 
-<b>
-${formatTanggal(item.tanggal_produksi)}
-</b>
-
-
-</div>
-
-
-
-<div class="detail-row">
-
-<span>
-Tanggal Kadaluarsa
-</span>
-
-
-<b>
-${formatTanggal(item.tanggal_kadaluarsa)}
 </b>
 
 
@@ -804,30 +652,29 @@ ${formatTanggal(item.tanggal_kadaluarsa)}
 <div class="detail-row">
 
 <span>
-Catatan
+📅 Pemeriksaan
 </span>
-
-
-<b>
-${item.catatan || "-"}
-</b>
-
-
-</div>
-
-
-
-
-<div class="detail-row">
-
-<span>
-Tanggal Pemeriksaan
-</span>
-
 
 <b>
 ${formatTanggal(item.created_at)}
 </b>
+
+</div>
+
+
+
+
+<button
+
+class="btnDetail"
+
+onclick="lihatDetail(${index})"
+
+>
+
+🔎 Lihat Detail
+
+</button>
 
 
 </div>
@@ -837,30 +684,17 @@ ${formatTanggal(item.created_at)}
 
 
 
+});
+
+
 }
 
 
 
-}
 
+dataBox.innerHTML=
+html;
 
-
-
-function tutupDetail(){
-
-
-const modal =
-document.getElementById(
-"detailModal"
-);
-
-
-
-if(modal){
-
-modal.style.display="none";
-
-}
 
 
 }
@@ -869,11 +703,9 @@ modal.style.display="none";
 
 
 
-
-
-// =================
+// =======================
 // FORMAT TANGGAL
-// =================
+// =======================
 
 
 function formatTanggal(tanggal){
@@ -888,10 +720,20 @@ return "-";
 
 
 return new Date(tanggal)
-
 .toLocaleDateString(
-"id-ID"
+"id-ID",
+{
+
+day:"2-digit",
+
+month:"long",
+
+year:"numeric"
+
+}
+
 );
+
 
 
 }
@@ -900,18 +742,27 @@ return new Date(tanggal)
 
 
 
-// =================
+// =======================
 // LOGOUT
-// =================
+// =======================
 
 
 function logout(){
 
 
-localStorage.clear();
+localStorage.removeItem(
+"token"
+);
 
 
-location.href="index.html";
+localStorage.removeItem(
+"user"
+);
+
+
+
+location.href=
+"index.html";
 
 
 }

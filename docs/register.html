@@ -8,10 +8,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>
-Buat Akun Baru
+Register - Food Check UMKM
 </title>
 
-<link rel="stylesheet" href="css/style.css?v=2">
+
+<link rel="stylesheet" href="css/style.css">
+
 
 </head>
 
@@ -19,48 +21,143 @@ Buat Akun Baru
 <body class="register-page">
 
 
-<div class="register-card">
+
+<!-- LOADING -->
+
+<div id="loading">
 
 
+<div class="loader">
 
-<div class="logo">
 🛡️
+
+</div>
+
+
+<h3>
+Food Check UMKM
+</h3>
+
+
+<p>
+Menyiapkan akun...
+</p>
+
+
+<div class="loading-bar">
+
+<span></span>
+
+</div>
+
+
 </div>
 
 
 
-<h1>
-Buat Akun Baru
-</h1>
 
+
+<div class="register-wrapper">
+
+
+
+<!-- FLOATING EMOJI -->
+
+
+<div class="food-floating">
+
+
+<span>🥕</span>
+<span>🥦</span>
+<span>🍅</span>
+<span>🥒</span>
+<span>🧄</span>
+<span>🌶️</span>
+<span>🫑</span>
+<span>🍎</span>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- REGISTER CARD -->
+
+
+<div class="register-card">
+
+
+
+<div class="login-logo">
+
+🛡️
+
+</div>
+
+
+
+
+<h2>
+
+Food Check UMKM
+
+</h2>
 
 
 <p>
-Daftar sebagai Member Food Check UMKM
+
+Buat akun baru
+
 </p>
 
 
 
 
+
+
 <label>
+
 Nama Lengkap
+
 </label>
 
-<input 
+
+<input
+
 id="nama"
-placeholder="Nama lengkap"
+
+placeholder="Masukkan nama lengkap"
+
 >
+
+
+
+
 
 
 
 <label>
+
 Username
+
 </label>
 
-<input 
+
+<input
+
 id="username"
-placeholder="Username"
+
+placeholder="Masukkan username"
+
 >
+
+
+
+
 
 
 
@@ -69,34 +166,64 @@ placeholder="Username"
 Password
 </label>
 
-<input 
+
+<div class="password-wrapper">
+
+
+<input
 id="password"
 type="password"
-placeholder="Password"
+placeholder="Masukkan password"
 >
+
+
+<div 
+class="eye"
+onclick="togglePassword()">
+
+👁
+
+</div>
+
+
+</div>
+
+
+
 
 
 
 
 <button onclick="register()">
 
-📩 Daftar
+
+📝 Daftar
+
 
 </button>
 
 
 
 
-<p>
+
+
+
+<div class="register-link">
+
 
 Sudah punya akun?
 
+
 <a href="index.html">
-Kembali Login
+
+Login sekarang
+
 </a>
 
 
-</p>
+</div>
+
+
 
 
 
@@ -104,10 +231,104 @@ Kembali Login
 
 
 
+
+
+
+</div>
+
+
+
+
+<div id="toast"></div>
+
+
+
+
 <script src="js/config.js"></script>
+
+<script src="js/toast.js"></script>
+
 <script src="js/register.js"></script>
 
 
+
+<script>
+
+
+// SHOW PASSWORD
+
+
+function togglePassword(){
+
+
+const pass =
+document.getElementById("password");
+
+
+if(pass.type === "password"){
+
+
+pass.type="text";
+
+
+}
+
+else{
+
+
+pass.type="password";
+
+
+}
+
+
+}
+
+
+
+
+
+// LOADING
+
+
+window.addEventListener(
+"load",
+()=>{
+
+
+setTimeout(()=>{
+
+
+document
+.getElementById("loading")
+.classList.add("hide");
+
+
+
+const wrapper =
+document.querySelector(".register-wrapper");
+
+
+if(wrapper){
+
+    wrapper.classList.add("show");
+
+}
+
+
+
+},1500);
+
+
+
+});
+
+
+</script>
+
+
+
 </body>
+
 
 </html>

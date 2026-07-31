@@ -5,12 +5,16 @@
 
 <meta charset="UTF-8">
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
 <title>
 Dashboard Food Check UMKM
 </title>
 
 
 <link rel="stylesheet" href="css/style.css">
+
 
 </head>
 
@@ -21,7 +25,11 @@ Dashboard Food Check UMKM
 <div class="layout">
 
 
-<!-- SIDEBAR -->
+
+<!-- =====================
+SIDEBAR
+===================== -->
+
 
 <div class="sidebar">
 
@@ -40,25 +48,38 @@ UMKM
 
 
 
+
+
 <div class="profile">
 
+
 <div class="avatar" id="avatar">
-A
+
+U
+
 </div>
+
 
 
 <div>
 
 <b id="sidebarNama">
+User
 </b>
 
+
 <small id="sidebarRole">
+Member
 </small>
 
 
 </div>
 
+
+
 </div>
+
+
 
 
 
@@ -67,16 +88,24 @@ A
 
 
 <button onclick="location.href='dashboard.html'">
+
 🏠 Dashboard
+
 </button>
 
-<button 
+
+
+<button
 id="btnMenuPemeriksaan"
-onclick="location.href='pemeriksaan.html'">
+onclick="location.href='pemeriksaan.html'"
+>
 
 🍜 Pemeriksaan
 
 </button>
+
+
+
 
 <button onclick="location.href='riwayat.html'">
 
@@ -90,9 +119,14 @@ onclick="location.href='pemeriksaan.html'">
 
 
 
-<button 
+
+
+
+
+<button
 class="logout"
-onclick="logout()">
+onclick="logout()"
+>
 
 🚪 Logout
 
@@ -106,180 +140,343 @@ onclick="logout()">
 
 
 
-<!-- CONTENT -->
+
+
+
+
+<!-- =====================
+CONTENT
+===================== -->
+
 
 <div class="content">
 
 
+
 <h1 id="roleTitle">
+
 Dashboard
+
 </h1>
 
+
+
+
+
+
+
 <div class="hero">
+
+
 
 <p>
 Selamat Datang,
 </p>
 
 
+
 <h2 id="welcome">
+
 Administrator
+
 </h2>
 
 
+
+
 <p>
+
 Kelola dan pantau hasil pemeriksaan keamanan pangan UMKM Anda.
+
 </p>
 
 
-<button 
-id="btnIsi"
-onclick="location.href='pemeriksaan.html'">
 
-🍜 Isi Pemeriksaan Makanan
+
+
+<button
+id="btnIsi"
+onclick="location.href='pemeriksaan.html'"
+>
+
+🔍 Periksa Produk Sekarang
 
 </button>
+
+
 
 
 </div>
 
 
+
+
+
+
+
+
+
+
+<!-- =====================
+STATISTIK
+===================== -->
 
 
 <div class="cards">
 
 
+
 <div class="card">
+
 
 <h2 id="total">
+
 0
+
 </h2>
 
 
 <span>
+
 📋 Total Pemeriksaan
+
 </span>
+
 
 </div>
 
 
 
+
+
 <div class="card">
+
 
 <h2 id="layak">
+
 0
+
 </h2>
 
 
+
 <span>
+
 ✅ Makanan Layak
+
 </span>
 
+
 </div>
+
+
 
 
 
 <div class="card">
 
+
 <h2 id="tidakLayak">
+
 0
+
 </h2>
 
 
+
 <span>
+
 ⚠️ Tidak Layak
+
 </span>
 
-</div>
-
 
 </div>
 
 
-<div class="dashboard-grid">
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =====================
+OWNER DASHBOARD
+===================== -->
+
+
+<div class="dashboard-grid" id="ownerGrid">
+
+
+
+
 
 
 <div class="manage" id="chartBox">
+
 
 <h2>
 📊 Statistik Pemeriksaan
 </h2>
 
+
 <canvas id="ownerChart"></canvas>
+
 
 </div>
 
 
+
+
+
+
+
 <div class="manage" id="manageBox">
 
+
 <h2>
-📊 Pemeriksaan Terbaru
+
+📋 Pemeriksaan Terbaru
+
 </h2>
 
 
+
+
 <p>
-Data pemeriksaan terbaru dari seluruh member.
+
+Data pemeriksaan terbaru.
+
 </p>
 
 
-<div id="latestData"></div>
+
+
+<div id="latestData">
+
+</div>
+
+
+
+
+
 
 
 <br>
 
 
-<button onclick="location.href='riwayat.html'">
+<button
+onclick="location.href='riwayat.html'"
+>
 
 📋 Lihat Semua Riwayat
 
 </button>
 
 
-<button onclick="loadOwner()">
 
+
+
+<button
+id="btnRefresh"
+onclick="loadOwner()"
+>
 🔄 Refresh Data
-
 </button>
 
 
-</div>
 
 
 </div>
 
-<div 
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =====================
+FILTER OWNER
+===================== -->
+
+
+<div
 id="filterOwnerBox"
 class="manage"
 style="display:none;"
 >
 
 
+
 <h2>
+
 🔎 Filter Member
+
 </h2>
+
 
 
 <select id="filterMember">
 
+
 <option value="all">
+
 Semua Member
+
 </option>
 
 
 </select>
 
 
+
 </div>
 
-<div class="manage" id="warningBox">
+
+
+
+
+
+
+
+
+<!-- =====================
+WARNING
+===================== -->
+
+
+<div
+class="manage"
+id="warningBox"
+style="display:none;"
+>
+
 
 <h2>
+
 🛡 Monitoring Keamanan Pangan
+
 </h2>
 
 
+
 <p>
-Daftar makanan yang membutuhkan perhatian.
+
+Produk yang membutuhkan perhatian.
+
 </p>
 
 
@@ -292,42 +489,100 @@ Daftar makanan yang membutuhkan perhatian.
 
 </div>
 
+
+
+
+
+
+
 </div>
 
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
 
 </div>
 
 
-</div>
 
-<div id="detailModal" class="modal">
+
+
+
+
+
+
+<!-- =====================
+MODAL DETAIL
+===================== -->
+
+
+<div
+id="detailModal"
+class="modal"
+>
+
 
 <div class="modal-content">
 
+
 <h2>
+
 🍜 Detail Pemeriksaan
+
 </h2>
+
+
+
 
 <div id="detailIsi">
 
 </div>
 
+
+
+
+
 <button onclick="tutupDetail()">
+
 Tutup
+
 </button>
 
-</div>
+
 
 </div>
+
+
+</div>
+
+
+
+
+
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
 <script src="js/config.js"></script>
+
+
+<script src="js/toast.js"></script>
+
+
+<script src="js/detail.js"></script>
+
 
 <script src="js/dashboard.js"></script>
 
+
+
+
+
 </body>
+
 
 </html>

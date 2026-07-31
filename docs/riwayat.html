@@ -5,14 +5,18 @@
 
 <meta charset="UTF-8">
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
 <title>
-Riwayat Pemeriksaan
+Riwayat Pemeriksaan - Food Check UMKM
 </title>
 
 
 <link rel="stylesheet" href="css/style.css">
 
 </head>
+
 
 
 <body>
@@ -22,7 +26,9 @@ Riwayat Pemeriksaan
 
 
 
-<!-- SIDEBAR -->
+<!-- =====================
+SIDEBAR
+===================== -->
 
 <div class="sidebar">
 
@@ -44,23 +50,30 @@ UMKM
 
 <div class="profile">
 
-<div class="avatar">
-A
+
+<div class="avatar" id="avatar">
+U
 </div>
+
 
 
 <div>
 
 <b id="sidebarNama">
+User
 </b>
 
+
 <small id="sidebarRole">
+Role
 </small>
 
 
 </div>
 
+
 </div>
+
 
 
 
@@ -75,6 +88,9 @@ A
 
 </button>
 
+
+
+
 <button 
 id="btnMenuPemeriksaan"
 onclick="location.href='pemeriksaan.html'">
@@ -83,7 +99,11 @@ onclick="location.href='pemeriksaan.html'">
 
 </button>
 
-<button onclick="location.href='riwayat.html'">
+
+
+
+
+<button class="active">
 
 📋 Riwayat Pemeriksaan
 
@@ -92,6 +112,8 @@ onclick="location.href='pemeriksaan.html'">
 
 
 </div>
+
+
 
 
 
@@ -107,6 +129,7 @@ onclick="logout()">
 
 
 
+
 </div>
 
 
@@ -115,19 +138,36 @@ onclick="logout()">
 
 
 
-<!-- CONTENT -->
+
+
+<!-- =====================
+CONTENT
+===================== -->
+
 
 <div class="content">
 
 
+
 <h1>
+
 📋 Riwayat Pemeriksaan
+
 </h1>
 
 
+
+
 <p>
-Daftar hasil pemeriksaan makanan Anda.
+
+Daftar hasil pemeriksaan keamanan pangan.
+
 </p>
+
+
+
+
+
 
 
 
@@ -135,102 +175,253 @@ Daftar hasil pemeriksaan makanan Anda.
 <div class="manage">
 
 
+
 <h2>
+
 📊 Data Pemeriksaan
+
 </h2>
 
 
-<div id="ownerFilter" style="display:none;">
+
+
+
+
+<!-- FILTER OWNER -->
+
+<div 
+id="ownerFilter"
+style="display:none;"
+>
+
 
 
 <select id="filterMember">
 
+
 <option value="all">
+
 Semua Member
+
 </option>
 
+
 </select>
+
+
+
+
 
 
 <select id="filterHasil">
 
+
 <option value="all">
+
 Semua Status
+
 </option>
 
 
 <option value="LAYAK">
+
 LAYAK
+
 </option>
 
 
 <option value="TIDAK LAYAK">
+
 TIDAK LAYAK
+
 </option>
+
 
 
 </select>
 
 
-<input 
+
+
+
+
+
+<input
+
 id="searchMakanan"
-placeholder="Cari makanan..."
+
+type="text"
+
+placeholder="Cari nama makanan..."
+
 >
+
+
+
+
 
 
 </div>
 
 
+
+
+
+
+
+
+
+<!-- DATA CARD -->
 
 <div id="data">
 
 
-</div>
+<div class="empty-data">
 
-
-</div>
-
-
+Memuat data...
 
 </div>
 
 
+</div>
+
 
 
 
 
 </div>
 
-<!-- MODAL DETAIL -->
 
-<div id="detailModal" class="modal">
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =====================
+MODAL DETAIL
+===================== -->
+
+
+<div 
+id="detailModal"
+class="modal"
+>
+
 
 <div class="modal-content">
 
+
+
 <h2>
+
 🍜 Detail Pemeriksaan
+
 </h2>
+
+
 
 
 <div id="detailIsi">
 
+
 </div>
 
 
-<button onclick="tutupDetail()">
+
+
+
+
+<button 
+onclick="tutupDetail()"
+>
+
+
 Tutup
+
+
 </button>
 
 
-</div>
+
+
 
 </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- =====================
+SCRIPT
+===================== -->
 
 
 <script src="js/config.js"></script>
+
+
+<script src="js/toast.js"></script>
+
+
+<script src="js/detail.js"></script>
+
+
 <script src="js/riwayat.js"></script>
 
 
+
+
+
+<script>
+
+
+function logout(){
+
+
+localStorage.removeItem("token");
+
+
+localStorage.removeItem("user");
+
+
+location.href="index.html";
+
+
+}
+
+
+</script>
+
+
+
 </body>
+
 
 </html>

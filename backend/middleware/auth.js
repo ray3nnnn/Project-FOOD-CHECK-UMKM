@@ -1,29 +1,64 @@
 const jwt = require("jsonwebtoken");
 
 
+// ==========================
+// VERIFY TOKEN
+// ==========================
+
 function verifyToken(req,res,next){
 
 
-const header =
+const authHeader =
 req.headers.authorization;
 
 
-if(!header){
+
+// cek header
+
+if(!authHeader){
+
 
 return res.status(401).json({
 
 success:false,
 
-message:"Token tidak ada"
+message:"Token tidak ditemukan"
 
 });
+
+
+}
+
+
+
+// cek format Bearer
+
+const parts =
+authHeader.split(" ");
+
+
+
+if(
+parts.length !== 2 ||
+parts[0] !== "Bearer"
+){
+
+
+return res.status(401).json({
+
+success:false,
+
+message:"Format token tidak valid"
+
+});
+
 
 }
 
 
 
 const token =
-header.split(" ")[1];
+parts[1];
 
 
 
@@ -32,49 +67,90 @@ try{
 
 const decoded =
 jwt.verify(
+
 token,
+
 process.env.JWT_SECRET
+
 );
+
 
 
 req.user = decoded;
 
 
+
 next();
+
 
 
 }
 
 catch(error){
 
-console.log(error);
 
-res.status(500).json({
+console.log(
+"JWT ERROR:",
+error.message
+);
+
+
+
+return res.status(401).json({
 
 success:false,
 
-message:error.message
+message:"Token tidak valid atau sudah expired"
 
 });
 
-}
-
 
 }
 
+
+
+}
+
+
+
+
+
+// ==========================
+// OWNER ONLY
+// ==========================
 
 
 function verifyOwner(req,res,next){
 
 
-if(req.user.role !== "owner"){
+
+if(!req.user){
+
+
+return res.status(401).json({
+
+success:false,
+
+message:"User tidak terautentikasi"
+
+});
+
+
+}
+
+
+
+
+if(
+req.user.role !== "owner"
+){
 
 
 return res.status(403).json({
 
 success:false,
 
-message:"Akses khusus owner"
+message:"Akses hanya untuk owner"
 
 });
 
@@ -82,14 +158,22 @@ message:"Akses khusus owner"
 }
 
 
+
+
 next();
+
 
 
 }
 
 
 
-module.exports={
+
+
+module.exports = {
+
 verifyToken,
+
 verifyOwner
+
 };
